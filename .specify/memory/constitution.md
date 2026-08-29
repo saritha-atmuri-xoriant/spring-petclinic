@@ -3,37 +3,30 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Cross-layer dependencies MUST follow a strict top-down flow (e.g., Controllers depend on Services, Services depend on Repositories). Direct dependencies between unrelated layers are forbidden.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). Direct dependencies MUST only flow downwards (e.g., Controllers depend on Services, Services depend on Repositories). No cross-layer dependencies are permitted except for those explicitly defined by framework conventions.
 
 ### II. Spring Boot Convention Over Configuration
-Leverage Spring Boot's auto-configuration capabilities. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be minimal, well-documented, and only introduced when explicit deviation from convention is required and justified.
+The project MUST leverage Spring Boot's auto-configuration capabilities wherever possible. Custom configurations MUST be minimal and clearly justified, documented within their respective classes (e.g., `WebConfiguration.java`, `CacheConfiguration.java`).
 
-### III. Test-Driven Development (TDD) and Comprehensive Testing
-All new features and bug fixes MUST be developed following a TDD approach. Unit tests MUST cover individual components, while integration tests MUST validate interactions between components and with external systems (e.g., database). The existing extensive test suite (17+ test files) MUST be maintained and expanded.
+### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
+All new features and bug fixes MUST be accompanied by unit and/or integration tests. Existing tests MUST be maintained and updated. Integration tests MUST cover critical paths, data access operations, and inter-component communication. Test files are clearly identifiable in the `src/test` directory.
 
-### IV. JPA and Spring Data Repository Best Practices
-All data access MUST be performed through Spring Data JPA repositories. Repositories MUST be kept lean, focusing on CRUD operations and custom queries. Business logic MUST NOT be embedded within repositories. Entities (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST adhere to JPA standards and validation constraints.
+### IV. Domain Model Integrity
+Domain entities (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST be POJOs with clear responsibilities. They MUST adhere to JPA entity conventions and utilize validation annotations where appropriate. Relationships between entities MUST be explicitly defined.
 
-### V. Observability and Debuggability
-The application MUST be designed with observability in mind. While explicit logging configurations are not detailed in the provided snippets, all controllers and services SHOULD emit structured logs. The use of Spring Boot Actuator or similar mechanisms for monitoring is encouraged.
+### V. Observability and Internationalization
+The application MUST support internationalization (i18n) for user-facing messages, as evidenced by `I18nPropertiesSyncTest.java` and `WebConfiguration.java`. Logging and error handling SHOULD be structured to facilitate debugging and monitoring.
 
 ## Additional Constraints
 
-### Technology Stack
-The project MUST primarily utilize Java, Spring Boot, Spring Data JPA, and Thymeleaf for templating. Dependencies MUST be managed via Maven.
-
-### Database Agnosticism (via Spring Data JPA)
-While integration tests exist for MySQL and PostgreSQL, the core application logic SHOULD remain agnostic to the underlying database technology, relying on Spring Data JPA abstractions.
+The project MUST utilize Java as the primary programming language and Spring Boot as the core framework. Dependencies MUST be managed via Maven. Database interactions MUST be handled through Spring Data JPA repositories.
 
 ## Development Workflow
 
-### Code Reviews
-All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to the core principles, coding standards, and test coverage.
+All code changes MUST be submitted via Pull Requests. Each Pull Request MUST include a description of the changes and be reviewed by at least one other team member. Automated checks, including compilation, testing, and static analysis (if configured), MUST pass before merging.
 
-### Quality Gates
-Automated checks, including compilation, static analysis (e.g., SonarQube), and all unit/integration tests, MUST pass before a pull request can be merged.
+## Governance
 
-Governance
-This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team. A migration plan MUST be provided for any significant changes. All pull requests and code reviews MUST verify compliance with this constitution.
+This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this Constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team. All Pull Requests and code reviews MUST verify compliance with these principles.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-29 | **Last Amended**: 2026-08-29
