@@ -3,35 +3,33 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). No cross-layer dependencies are permitted except for those explicitly defined by the framework (e.g., Controller depending on Service, Service depending on Repository).
+Every component MUST reside within its designated architectural layer (Controller, Repository, Service, Model, Configuration, etc.). Components MUST NOT directly depend on components from layers lower than their immediate predecessor (e.g., Controllers MUST NOT directly call Repositories).
 
-### II. Spring Boot Convention Over Configuration
-Leverage Spring Boot's auto-configuration capabilities. Custom configurations MUST be minimal and clearly justified, documented within their respective configuration classes (e.g., `CacheConfiguration`, `WebConfiguration`).
+### II. Spring Boot Convention and Configuration
+The project MUST leverage Spring Boot conventions for auto-configuration and dependency management. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be clearly defined and adhere to Spring's configuration patterns.
 
-### III. Test-Driven Development (TDD) and Comprehensive Testing
-All new features and bug fixes MUST be accompanied by unit and integration tests. Unit tests MUST verify individual component logic, while integration tests MUST validate interactions between components and with external systems (e.g., database). Existing tests MUST be maintained and extended as needed.
+### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
+All new features and bug fixes MUST be accompanied by unit and/or integration tests. Existing functionality MUST maintain a high level of test coverage, as evidenced by the numerous test files present in the `src/test` directory. Integration tests MUST specifically cover interactions between layers and external dependencies (e.g., database access).
 
-### IV. Data Persistence Abstraction
-Data access MUST be exclusively handled through Spring Data JPA repositories. Direct SQL manipulation or manual JDBC operations are forbidden. Repository interfaces MUST define clear contracts for data operations.
+### IV. Domain Model Integrity
+The domain model classes (e.g., `Owner`, `Pet`, `Vet`) MUST be the single source of truth for data structures. All business logic related to these entities SHOULD be encapsulated within their respective classes or associated service layers. Validation rules defined in the model (e.g., `@NotNull`) MUST be respected throughout the application.
 
-### V. RESTful API Design
-Controllers MUST expose RESTful endpoints following standard HTTP methods and status codes. Request and response payloads SHOULD be designed for clarity and efficiency, leveraging JSON where appropriate.
+### V. Observability and Debuggability
+The application MUST be designed with observability in mind. While explicit logging configurations are not detailed in the provided snippets, the presence of `CrashController` and various test suites suggests a focus on identifying and debugging issues. Future enhancements should consider structured logging and tracing.
 
-## Additional Constraints
+## Development Workflow and Quality Gates
 
-The project MUST adhere to the following constraints:
-*   **Technology Stack**: Java 17+, Spring Boot 3.x, Spring Data JPA, Thymeleaf for templating.
-*   **Database**: Support for multiple database integrations (e.g., H2, PostgreSQL, MySQL) as demonstrated by integration tests.
-*   **Internationalization (i18n)**: All user-facing strings MUST be externalized and managed via properties files, as enforced by `I18nPropertiesSyncTest`.
+### Code Reviews
+All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to the core principles outlined in this constitution, including architectural layering, test coverage, and adherence to Spring Boot conventions.
 
-## Development Workflow
+### Testing Gates
+Automated tests (unit and integration) MUST pass successfully in the CI pipeline before any code can be merged. Integration tests specifically targeting database interactions (e.g., `MySqlIntegrationTests`, `PostgresIntegrationTests`) are critical for ensuring data persistence and retrieval integrity.
 
-*   **Branching Strategy**: Feature branches MUST be created from the `main` branch. All changes MUST be submitted via Pull Requests (PRs).
-*   **Code Reviews**: All PRs MUST undergo at least one approval from a team member familiar with the project's architecture and principles. Reviews MUST verify adherence to this constitution.
-*   **CI/CD Pipeline**: The CI pipeline MUST include static analysis, unit tests, and integration tests. Successful execution of all tests is a prerequisite for merging.
+### Deployment Readiness
+Code deployed to production environments MUST have passed all automated tests, undergone successful code reviews, and have been validated through integration testing against representative environments.
 
 ## Governance
 
-This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, documented justification, and approval by a majority of the core development team. Any approved amendments MUST include a migration plan for existing code to ensure compliance. All Pull Requests and code reviews MUST verify compliance with the principles outlined herein.
+This constitution supersedes all other informal development practices. Amendments to this constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team. Any approved amendments MUST include a plan for migrating existing code and practices to comply with the new rules. All pull requests and code reviews MUST explicitly verify compliance with this constitution. Complexity introduced into the codebase MUST be justified and documented.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-30 | **Last Amended**: 2026-08-30
