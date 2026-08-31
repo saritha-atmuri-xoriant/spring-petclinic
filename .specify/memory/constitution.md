@@ -3,32 +3,36 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Cross-layer dependencies MUST follow a strict top-down flow (Controller -> Service -> Repository -> Domain/Model), with Configuration and Test layers being exceptions for dependency injection and testing utilities respectively.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain, Configuration, Test). Direct dependencies MUST only flow downwards (e.g., Controller can depend on Service, Service on Repository, but not vice-versa). This ensures maintainability and clear separation of concerns.
 
 ### II. Spring Boot Convention Over Configuration
-The project MUST leverage Spring Boot's auto-configuration capabilities wherever possible. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be minimal and clearly justified, adhering to established Spring patterns.
+Leverage Spring Boot's auto-configuration capabilities wherever possible. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be minimal, well-documented, and only introduced when standard conventions are insufficient or require explicit customization for performance or specific feature needs.
 
 ### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and/or integration tests. Unit tests MUST target individual components, while integration tests MUST verify interactions between layers and external systems (e.g., database interactions via `MySqlIntegrationTests.java`, `PostgresIntegrationTests.java`). Test coverage MUST be maintained above 80%.
+All new features and bug fixes MUST be accompanied by unit and integration tests. Unit tests MUST cover individual components (e.g., `OwnerControllerTests.java`, `PetValidatorTests.java`), while integration tests (e.g., `MySqlIntegrationTests.java`, `PetClinicIntegrationTests.java`) MUST validate interactions between components and with the data layer. Test coverage metrics MUST be maintained and reviewed.
 
-### IV. Domain Entity Integrity
-Domain entities (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST be POJOs with appropriate JPA annotations for persistence and validation annotations for data integrity. They MUST NOT contain business logic beyond basic getters, setters, and validation-related methods.
+### IV. Domain Model Integrity
+The domain model classes (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST be the single source of truth for business entities. They MUST be designed for immutability where appropriate and enforce business rules through validation annotations and encapsulated logic. Persistence concerns (JPA annotations) MUST be confined to these entities and their associated repositories.
 
-### V. Observability and Logging
-All controllers and services MUST implement structured logging for request handling, errors, and key business events. The `PetClinicApplication.java` and related configurations SHOULD be instrumented for monitoring.
+### V. Observability and Diagnostics
+The application MUST be instrumented for observability. This includes structured logging (as implied by Spring Boot's default logging configuration) and the presence of specific diagnostic controllers like `CrashController.java` to aid in debugging production issues.
+
+## Additional Constraints
+
+The project MUST adhere to the following constraints:
+*   **Technology Stack**: Primarily Java, Spring Boot, Spring Data JPA, Thymeleaf for templating.
+*   **Database**: Support for multiple database integrations as evidenced by `MySqlIntegrationTests.java` and `PostgresIntegrationTests.java`. Configuration for these should be externalized.
+*   **Internationalization**: All user-facing strings MUST be internationalized using Spring's message source mechanism, as enforced by `I18nPropertiesSyncTest.java`.
 
 ## Development Workflow
 
-### Code Review and Quality Gates
-All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to the core principles, code style, and test coverage. Automated checks, including static analysis and unit tests, MUST pass before merging.
-
-### Database Interaction Standards
-Repository interfaces (e.g., `OwnerRepository.java`) MUST be used for all data access operations. Direct SQL queries within controllers or services are forbidden. Integration tests MUST validate database schema and data integrity.
-
-### Internationalization (i18n) Compliance
-All user-facing strings MUST be externalized and managed through properties files (e.g., `messages.properties`). The `I18nPropertiesSyncTest.java` MUST pass to ensure all strings are translated across all supported locales.
+*   **Branching Strategy**: Feature branches MUST be created from the main development branch.
+*   **Code Reviews**: All pull requests MUST undergo at least one thorough code review by a team member familiar with the project's architecture and principles. Reviews MUST verify adherence to this constitution.
+*   **Testing Gates**: CI/CD pipelines MUST include automated execution of all unit and integration tests. Builds MUST fail if tests do not pass.
+*   **Deployment**: Deployments to production environments MUST be preceded by successful integration tests against a staging environment that mirrors production.
 
 ## Governance
-This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, a documented justification, and approval by a majority of the core development team. Any amendments MUST include a plan for migrating existing code to comply with the new rules. All pull requests and code reviews MUST verify compliance with this constitution.
+
+This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, documented justification, and approval by a majority of the core development team. Any approved amendments MUST include a migration plan to ensure existing code and practices are brought into compliance. All pull requests and code reviews MUST verify compliance with this constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
