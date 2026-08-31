@@ -2,38 +2,36 @@
 
 ## Core Principles
 
-### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Cross-layer dependencies MUST follow a strict top-down flow (e.g., Controllers depend on Services, Services depend on Repositories). Direct dependencies between non-adjacent layers are prohibited.
+### I. Layered Architecture Enforcement
+Every component MUST adhere to a strict layered architecture: Controller, Service, Repository, and Domain. Direct dependencies MUST only exist between adjacent layers (e.g., Controller can depend on Service, Service on Repository, Repository on Domain). Cross-layer dependencies are forbidden.
 
-### II. Spring Boot Convention Over Configuration
-Leverage Spring Boot's auto-configuration capabilities wherever possible. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be minimal, well-documented, and justified by specific project needs beyond standard Spring Boot defaults.
+### II. Test Coverage Mandate
+All new features and bug fixes MUST be accompanied by comprehensive unit and integration tests. Unit tests MUST cover individual components (controllers, services, repositories, models) with a minimum of 80% code coverage. Integration tests MUST verify interactions between layers and external systems (e.g., database).
 
-### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and integration tests. Unit tests MUST cover individual components (controllers, services, models), while integration tests MUST verify interactions between components and with external systems (e.g., database, external APIs). Test coverage MUST be tracked and maintained, with a minimum threshold of 80% for critical components.
+### III. Spring Boot Convention Adherence
+The project MUST leverage Spring Boot conventions for configuration, dependency injection, and auto-configuration. Custom configurations (e.g., `WebConfiguration.java`, `CacheConfiguration.java`) MUST be clearly documented and justified.
 
-### IV. JPA Repository Best Practices
-JPA repositories (e.g., `OwnerRepository.java`, `VetRepository.java`) MUST be used for data access. Custom query methods SHOULD be defined within the repository interfaces. Avoid complex business logic within repositories; delegate such logic to the service layer.
+### IV. Domain Model Integrity
+Domain entities (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST be POJOs with minimal logic, primarily focused on data representation and validation. Business logic MUST reside in the Service layer. Entities MUST be annotated appropriately for persistence (JPA).
 
-### V. RESTful API Design
-Controllers (e.g., `OwnerController.java`, `PetController.java`) MUST adhere to RESTful principles for API design. Use standard HTTP methods (GET, POST, PUT, DELETE) appropriately. Responses SHOULD be in JSON format, and error handling MUST be consistent and informative.
+### V. Observability and Monitoring
+All controllers and services MUST be instrumented for observability. This includes structured logging for key operations and error handling. Integration tests for database interactions (e.g., `MySqlIntegrationTests.java`, `PostgresIntegrationTests.java`) implicitly support this by verifying data persistence and retrieval.
 
 ## Additional Constraints
 
-### Database Agnosticism
-While integration tests may target specific databases (e.g., `MySqlIntegrationTests.java`, `PostgresIntegrationTests.java`), the core application logic MUST remain agnostic to the underlying database technology. Use JPA and Spring Data JPA to abstract database interactions.
-
-### Internationalization (i18n)
-All user-facing strings MUST be internationalized using Spring's message source mechanism. The `I18nPropertiesSyncTest.java` serves as a gate to ensure all strings are properly translated across supported locales.
+The project MUST use Java as the primary programming language and Spring Boot as the core framework. Database interactions MUST be managed through Spring Data JPA. The project is designed to be deployable within a containerized environment, as indicated by the presence of `k8s/` directory. Development environments can be facilitated using `.devcontainer/`.
 
 ## Development Workflow
 
-### Code Reviews
-All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to this constitution, code quality, test coverage, and overall design.
+All code changes MUST be submitted as Pull Requests (PRs). Each PR MUST include:
+1.  Unit tests covering the changes.
+2.  Integration tests where applicable.
+3.  A clear description of the changes and the problem they solve.
+4.  All PRs MUST be reviewed by at least one other team member.
+5.  Automated checks (CI pipeline) MUST pass before merging. This includes compilation, static analysis, and all tests.
 
-### Dependency Management
-External dependencies MUST be managed via Maven. New dependencies MUST be carefully evaluated for necessity and potential impact on the project.
+## Governance
 
-Governance
-This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, documented justification, and approval by a majority of the core development team. Any approved amendments MUST include a migration plan to ensure existing code adheres to the new principles. All pull requests and code reviews MUST verify compliance with this constitution.
+This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this Constitution require a formal proposal, documented justification, and approval by a majority of the core development team. Any approved amendment MUST include a migration plan if it impacts existing code or processes. All Pull Requests and code reviews MUST verify compliance with these principles.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
