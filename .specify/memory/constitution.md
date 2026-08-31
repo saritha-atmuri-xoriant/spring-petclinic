@@ -2,31 +2,49 @@
 
 ## Core Principles
 
-### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). No cross-layer dependencies are permitted except for those explicitly defined by the framework (e.g., Controller depending on Service, Service depending on Repository).
+### I. Layered Architecture Enforcement
+Every component MUST adhere to a strict layered architecture: Controller, Service, Repository, and Domain/Model. Dependencies MUST flow downwards (Controller -> Service -> Repository -> Domain). Direct dependencies between non-adjacent layers are prohibited.
 
-### II. Spring Boot Convention Over Configuration
-The project MUST leverage Spring Boot's auto-configuration capabilities. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be minimal and clearly justified, adhering to established Spring Boot patterns.
+### II. Test Coverage Mandate
+All new features and bug fixes MUST be accompanied by comprehensive unit and integration tests. Unit tests MUST cover individual components (e.g., controllers, services, repositories) in isolation. Integration tests MUST verify the interaction between layers and with external systems (e.g., database, external APIs). A minimum of 80% code coverage MUST be maintained for all new code.
 
-### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and/or integration tests. Unit tests MUST cover individual components (e.g., `OwnerControllerTests.java`, `PetValidatorTests.java`), while integration tests MUST verify interactions between layers and external systems (e.g., `MySqlIntegrationTests.java`, `CrashControllerIntegrationTests.java`). Test coverage MUST be maintained above 80%.
+### III. Spring Boot Convention Adherence
+The project MUST leverage Spring Boot conventions for configuration, dependency injection, and auto-configuration. Custom configurations SHOULD be minimal and clearly justified. All beans MUST be explicitly defined or auto-configured by Spring Boot.
 
-### IV. Data Persistence Abstraction
-The project MUST utilize Spring Data JPA for data access. Repository interfaces (e.g., `OwnerRepository.java`, `VetRepository.java`) MUST abstract the underlying persistence mechanism, ensuring that domain entities are not directly coupled to database specifics.
+### IV. RESTful API Design
+Controllers MUST expose RESTful APIs following standard HTTP methods (GET, POST, PUT, DELETE) and status codes. APIs SHOULD be stateless and use JSON for request and response bodies.
 
-### V. Internationalization and Localization
-All user-facing strings MUST be externalized and managed through properties files (e.g., `messages.properties`). The `I18nPropertiesSyncTest.java` MUST pass to ensure all strings are translated across all supported locales.
+### V. Data Persistence Abstraction
+Data access MUST be managed through Spring Data repositories. Direct SQL queries within service or controller layers are prohibited. All database interactions MUST be abstracted by repository interfaces.
+
+## Additional Constraints
+
+The project MUST use Java as the primary programming language.
+The project MUST use Maven as the build tool.
+The project MUST use JUnit 5 for unit and integration testing.
+The project MUST use Spring Boot for application framework.
+The project MUST use Spring Data JPA for data persistence.
+The project MUST use a relational database (e.g., H2, PostgreSQL, MySQL) for data storage.
+The project MUST adhere to Java Bean Validation (JSR 380) for data validation.
+The project MUST implement internationalization (i18n) for all user-facing strings.
 
 ## Development Workflow
 
-The standard development workflow involves:
-1. **Feature Branching**: All development MUST occur on feature branches.
-2. **Code Review**: All Pull Requests (PRs) MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to this constitution, code quality, and test coverage.
-3. **Automated Testing**: CI pipelines MUST execute all unit and integration tests on every commit.
-4. **Deployment**: Deployments to production environments are subject to successful completion of all automated tests and a final sign-off from the lead architect.
+All code changes MUST be submitted as Pull Requests (PRs).
+Each PR MUST be reviewed by at least one other team member.
+All automated tests (unit, integration) MUST pass before a PR can be merged.
+Code reviews MUST verify adherence to the core principles and architectural guidelines.
+New features or significant changes MUST include updated or new documentation.
+The `k8s/` directory contains Kubernetes deployment configurations. These should be kept up-to-date with application changes.
+The `.devcontainer/` directory provides development environment configurations, ensuring consistency across developer machines.
 
 ## Governance
 
-This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team. Any approved amendments MUST include a migration plan to ensure existing code adheres to the new principles. All Pull Requests and code reviews MUST verify compliance with this constitution.
+This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository.
+Amendments to this Constitution require a formal proposal, documented justification, and approval by a majority of the core development team.
+Any approved amendment MUST include a migration plan to ensure existing code and processes comply with the new rules.
+All Pull Requests and code reviews MUST verify compliance with this Constitution.
+Complexity in the codebase MUST be justified and documented.
+The `src/test/java` directory contains the primary source of truth for testing conventions.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-30 | **Last Amended**: 2026-08-30
+**Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
