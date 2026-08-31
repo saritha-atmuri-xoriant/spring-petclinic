@@ -3,36 +3,37 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain, Configuration, Test). Direct dependencies MUST only flow downwards (e.g., Controller can depend on Service, Service on Repository, but not vice-versa). This ensures maintainability and clear separation of concerns.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Components MUST NOT cross layer boundaries inappropriately (e.g., a Controller directly calling a Repository).
 
 ### II. Spring Boot Convention Over Configuration
-Leverage Spring Boot's auto-configuration capabilities wherever possible. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be minimal, well-documented, and only introduced when standard conventions are insufficient or require explicit customization for performance or specific feature needs.
+The project MUST leverage Spring Boot's auto-configuration capabilities. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be minimal and clearly justified, adhering to established Spring patterns.
 
 ### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and integration tests. Unit tests MUST cover individual components (e.g., `OwnerControllerTests.java`, `PetValidatorTests.java`), while integration tests (e.g., `MySqlIntegrationTests.java`, `PetClinicIntegrationTests.java`) MUST validate interactions between components and with the data layer. Test coverage metrics MUST be maintained and reviewed.
+All new features and bug fixes MUST be accompanied by unit and/or integration tests. Existing tests MUST pass. Integration tests MUST specifically cover inter-layer communication and critical business logic flows. The presence of numerous integration tests (e.g., `MySqlIntegrationTests`, `PostgresIntegrationTests`) indicates a strong emphasis on this principle.
 
 ### IV. Domain Model Integrity
-The domain model classes (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST be the single source of truth for business entities. They MUST be designed for immutability where appropriate and enforce business rules through validation annotations and encapsulated logic. Persistence concerns (JPA annotations) MUST be confined to these entities and their associated repositories.
+Domain entities (e.g., `Owner`, `Pet`, `Vet`) MUST be defined with appropriate JPA annotations and validation constraints. Relationships between entities MUST be clearly defined and managed.
 
-### V. Observability and Diagnostics
-The application MUST be instrumented for observability. This includes structured logging (as implied by Spring Boot's default logging configuration) and the presence of specific diagnostic controllers like `CrashController.java` to aid in debugging production issues.
+### V. Observability and Configuration Management
+The application MUST support standard Spring Boot Actuator endpoints for monitoring. Configuration properties MUST be managed externally (e.g., `application.properties`, environment variables) and not hardcoded within the codebase.
 
 ## Additional Constraints
 
-The project MUST adhere to the following constraints:
-*   **Technology Stack**: Primarily Java, Spring Boot, Spring Data JPA, Thymeleaf for templating.
-*   **Database**: Support for multiple database integrations as evidenced by `MySqlIntegrationTests.java` and `PostgresIntegrationTests.java`. Configuration for these should be externalized.
-*   **Internationalization**: All user-facing strings MUST be internationalized using Spring's message source mechanism, as enforced by `I18nPropertiesSyncTest.java`.
+### Technology Stack
+The project MUST utilize Java, Spring Boot, Spring Data JPA, and Thymeleaf for templating. Database interactions are expected to be managed via JPA repositories.
+
+### Internationalization (i18n)
+All user-facing strings MUST be internationalized and managed through properties files. The `I18nPropertiesSyncTest` mandates that all strings are translated across all supported locales.
 
 ## Development Workflow
 
-*   **Branching Strategy**: Feature branches MUST be created from the main development branch.
-*   **Code Reviews**: All pull requests MUST undergo at least one thorough code review by a team member familiar with the project's architecture and principles. Reviews MUST verify adherence to this constitution.
-*   **Testing Gates**: CI/CD pipelines MUST include automated execution of all unit and integration tests. Builds MUST fail if tests do not pass.
-*   **Deployment**: Deployments to production environments MUST be preceded by successful integration tests against a staging environment that mirrors production.
+### Code Reviews
+All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to the principles outlined in this constitution, code quality, and test coverage.
+
+### Testing Gates
+Successful execution of all unit and integration tests is a mandatory gate for merging code. CI/CD pipelines MUST enforce this requirement.
 
 ## Governance
-
-This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, documented justification, and approval by a majority of the core development team. Any approved amendments MUST include a migration plan to ensure existing code and practices are brought into compliance. All pull requests and code reviews MUST verify compliance with this constitution.
+This constitution supersedes all other development practices for the saritha-atmuri-xoriant/spring-petclinic repository. Amendments to this constitution require a formal proposal, documented justification, and approval by the project lead. All amendments MUST include a plan for migrating existing code to comply with the changes. All pull requests and code reviews MUST verify compliance with this constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
