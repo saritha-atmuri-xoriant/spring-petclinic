@@ -2,49 +2,38 @@
 
 ## Core Principles
 
-### I. Layered Architecture Enforcement
-Every component MUST adhere to a strict layered architecture: Controller, Service, Repository, and Domain/Model. Dependencies MUST flow downwards (Controller -> Service -> Repository -> Domain). Direct dependencies between non-adjacent layers are prohibited.
+### I. Layered Architecture Adherence
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Components MUST NOT cross layer boundaries inappropriately (e.g., a Controller directly calling a Repository).
 
-### II. Test Coverage Mandate
-All new features and bug fixes MUST be accompanied by comprehensive unit and integration tests. Unit tests MUST cover individual components (e.g., controllers, services, repositories) in isolation. Integration tests MUST verify the interaction between layers and with external systems (e.g., database, external APIs). A minimum of 80% code coverage MUST be maintained for all new code.
+### II. Spring Boot Convention Compliance
+The project MUST leverage Spring Boot conventions for configuration, auto-configuration, and dependency management. This includes adhering to standard Spring Boot annotations and practices for web applications, data access, and testing.
 
-### III. Spring Boot Convention Adherence
-The project MUST leverage Spring Boot conventions for configuration, dependency injection, and auto-configuration. Custom configurations SHOULD be minimal and clearly justified. All beans MUST be explicitly defined or auto-configured by Spring Boot.
+### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
+All new features and bug fixes MUST be accompanied by unit and/or integration tests. Existing functionality MUST maintain a high level of test coverage. Tests MUST verify correctness, edge cases, and adherence to architectural principles.
 
-### IV. RESTful API Design
-Controllers MUST expose RESTful APIs following standard HTTP methods (GET, POST, PUT, DELETE) and status codes. APIs SHOULD be stateless and use JSON for request and response bodies.
+### IV. Data Access Abstraction
+All direct database interactions MUST be encapsulated within Repository interfaces. Service layers MUST interact with Repositories, and Controllers MUST interact with Services. Direct SQL or JPA calls from Controllers or non-Repository classes are forbidden.
 
-### V. Data Persistence Abstraction
-Data access MUST be managed through Spring Data repositories. Direct SQL queries within service or controller layers are prohibited. All database interactions MUST be abstracted by repository interfaces.
+### V. Observability and Logging
+Application events, errors, and significant operations MUST be logged using structured logging. The application MUST provide mechanisms for monitoring its health and performance, especially in production environments.
 
 ## Additional Constraints
 
-The project MUST use Java as the primary programming language.
-The project MUST use Maven as the build tool.
-The project MUST use JUnit 5 for unit and integration testing.
-The project MUST use Spring Boot for application framework.
-The project MUST use Spring Data JPA for data persistence.
-The project MUST use a relational database (e.g., H2, PostgreSQL, MySQL) for data storage.
-The project MUST adhere to Java Bean Validation (JSR 380) for data validation.
-The project MUST implement internationalization (i18n) for all user-facing strings.
+### Technology Stack
+The project MUST utilize Java as the primary programming language, Spring Boot as the application framework, and JPA with an RDBMS (e.g., MySQL, PostgreSQL) for data persistence. Frontend technologies are not explicitly defined by this constitution but should integrate seamlessly with the backend API.
+
+### Security
+All input validation MUST be performed to prevent common web vulnerabilities. Sensitive data MUST be handled with appropriate security measures.
 
 ## Development Workflow
 
-All code changes MUST be submitted as Pull Requests (PRs).
-Each PR MUST be reviewed by at least one other team member.
-All automated tests (unit, integration) MUST pass before a PR can be merged.
-Code reviews MUST verify adherence to the core principles and architectural guidelines.
-New features or significant changes MUST include updated or new documentation.
-The `k8s/` directory contains Kubernetes deployment configurations. These should be kept up-to-date with application changes.
-The `.devcontainer/` directory provides development environment configurations, ensuring consistency across developer machines.
+### Code Reviews
+All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to this constitution, code quality, test coverage, and overall design.
 
-## Governance
+### Quality Gates
+Automated checks, including static analysis, code formatting, and all defined tests, MUST pass before a pull request can be merged.
 
-This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository.
-Amendments to this Constitution require a formal proposal, documented justification, and approval by a majority of the core development team.
-Any approved amendment MUST include a migration plan to ensure existing code and processes comply with the new rules.
-All Pull Requests and code reviews MUST verify compliance with this Constitution.
-Complexity in the codebase MUST be justified and documented.
-The `src/test/java` directory contains the primary source of truth for testing conventions.
+Governance
+This constitution supersedes all other development practices for the saritha-atmuri-xoriant/spring-petclinic repository. Amendments to this constitution require a formal proposal, review by the core development team, and a documented migration plan if necessary. All pull requests and code reviews must verify compliance with this constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
