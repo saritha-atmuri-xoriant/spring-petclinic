@@ -3,37 +3,32 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Cross-layer dependencies MUST follow a strict top-down flow (e.g., Controllers depend on Services, Services depend on Repositories). Direct dependencies between non-adjacent layers are prohibited.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Cross-layer dependencies MUST follow a strict top-down flow (Controller -> Service -> Repository -> Domain/Model), with Configuration and Test layers being exceptions for dependency injection and testing utilities respectively.
 
-### II. Spring Boot Convention and Configuration
-The project MUST leverage Spring Boot conventions for auto-configuration and dependency injection. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be clearly defined and minimal, relying on Spring Boot's auto-configuration capabilities where possible.
+### II. Spring Boot Convention Over Configuration
+The project MUST leverage Spring Boot's auto-configuration capabilities wherever possible. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be minimal and clearly justified, adhering to established Spring patterns.
 
 ### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST include corresponding unit and integration tests. Unit tests MUST focus on individual components, while integration tests MUST verify interactions between components and with external systems (e.g., database). Test coverage MUST be maintained above 80% for critical components.
+All new features and bug fixes MUST be accompanied by unit and/or integration tests. Unit tests MUST target individual components, while integration tests MUST verify interactions between layers and external systems (e.g., database interactions via `MySqlIntegrationTests.java`, `PostgresIntegrationTests.java`). Test coverage MUST be maintained above 80%.
 
-### IV. Data Persistence Abstraction
-Data access logic MUST be encapsulated within Repository interfaces (e.g., `OwnerRepository`, `PetTypeRepository`). These repositories MUST abstract the underlying persistence mechanism (e.g., JPA, JDBC). Domain entities (e.g., `Owner`, `Pet`) MUST be POJOs with minimal persistence-specific annotations.
+### IV. Domain Entity Integrity
+Domain entities (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST be POJOs with appropriate JPA annotations for persistence and validation annotations for data integrity. They MUST NOT contain business logic beyond basic getters, setters, and validation-related methods.
 
-### V. RESTful API Design
-Controllers (e.g., `OwnerController`, `VetController`) MUST expose RESTful endpoints following standard HTTP methods and status codes. Request and response payloads SHOULD be designed for clarity and efficiency, leveraging JSON as the primary format.
-
-## Additional Constraints
-
-### Security Requirements
-All sensitive data handling and access control mechanisms MUST adhere to Spring Security best practices. Input validation MUST be implemented at the controller layer to prevent common web vulnerabilities.
-
-### Performance Standards
-Database queries MUST be optimized to ensure efficient data retrieval. Caching mechanisms (e.g., JCache) SHOULD be employed judiciously for frequently accessed, read-heavy data to improve response times.
+### V. Observability and Logging
+All controllers and services MUST implement structured logging for request handling, errors, and key business events. The `PetClinicApplication.java` and related configurations SHOULD be instrumented for monitoring.
 
 ## Development Workflow
 
-### Code Review Process
-All code changes submitted via Pull Requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to architectural principles, coding standards, and test coverage requirements.
+### Code Review and Quality Gates
+All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to the core principles, code style, and test coverage. Automated checks, including static analysis and unit tests, MUST pass before merging.
 
-### Quality Gates
-Automated checks, including static analysis, unit tests, and integration tests, MUST pass successfully before a Pull Request can be merged. Continuous Integration (CI) pipelines MUST enforce these quality gates.
+### Database Interaction Standards
+Repository interfaces (e.g., `OwnerRepository.java`) MUST be used for all data access operations. Direct SQL queries within controllers or services are forbidden. Integration tests MUST validate database schema and data integrity.
+
+### Internationalization (i18n) Compliance
+All user-facing strings MUST be externalized and managed through properties files (e.g., `messages.properties`). The `I18nPropertiesSyncTest.java` MUST pass to ensure all strings are translated across all supported locales.
 
 ## Governance
-This Constitution supersedes all other informal practices and guidelines. Amendments to this Constitution require a formal proposal, documented justification, and approval by a majority of the core development team. Any approved amendments MUST include a migration plan to ensure existing code adheres to the new principles. All Pull Requests and code reviews MUST explicitly verify compliance with this Constitution.
+This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, a documented justification, and approval by a majority of the core development team. Any amendments MUST include a plan for migrating existing code to comply with the new rules. All pull requests and code reviews MUST verify compliance with this constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
