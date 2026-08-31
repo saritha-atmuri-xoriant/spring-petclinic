@@ -3,37 +3,40 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Components MUST NOT cross layer boundaries inappropriately (e.g., a Controller directly calling a Repository).
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). Components MUST NOT cross layer boundaries in an unintended manner. This ensures maintainability and separation of concerns.
 
 ### II. Spring Boot Convention Over Configuration
-The project MUST leverage Spring Boot's auto-configuration capabilities. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be minimal and clearly justified, adhering to established Spring patterns.
+Leverage Spring Boot's auto-configuration capabilities wherever possible. Custom configurations MUST be clearly documented and justified. Avoid unnecessary boilerplate code.
 
-### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and/or integration tests. Existing tests MUST pass. Integration tests MUST specifically cover inter-layer communication and critical business logic flows. The presence of numerous integration tests (e.g., `MySqlIntegrationTests`, `PostgresIntegrationTests`) indicates a strong emphasis on this principle.
+### III. Test-Driven Development (TDD) and Comprehensive Testing
+All new features and bug fixes MUST be developed with a test-first approach. Unit tests MUST cover individual components, while integration tests MUST validate interactions between layers and external dependencies (e.g., database). Test coverage MUST be maintained at a high level.
 
-### IV. Domain Model Integrity
-Domain entities (e.g., `Owner`, `Pet`, `Vet`) MUST be defined with appropriate JPA annotations and validation constraints. Relationships between entities MUST be clearly defined and managed.
+### IV. Data Persistence Abstraction
+The Repository layer MUST abstract all data access logic. All interactions with the underlying data store (e.g., database) MUST be performed through repository interfaces. Domain entities MUST be POJOs and adhere to JPA standards.
 
-### V. Observability and Configuration Management
-The application MUST support standard Spring Boot Actuator endpoints for monitoring. Configuration properties MUST be managed externally (e.g., `application.properties`, environment variables) and not hardcoded within the codebase.
+### V. RESTful API Design
+Controllers MUST expose RESTful endpoints following standard HTTP methods and status codes. Data transfer between the client and server SHOULD utilize JSON.
 
 ## Additional Constraints
 
 ### Technology Stack
-The project MUST utilize Java, Spring Boot, Spring Data JPA, and Thymeleaf for templating. Database interactions are expected to be managed via JPA repositories.
+The project MUST utilize Java, Spring Boot, Spring Data JPA, and Thymeleaf for templating. Database interactions are expected to be with a relational database (e.g., H2, MySQL, PostgreSQL).
 
 ### Internationalization (i18n)
-All user-facing strings MUST be internationalized and managed through properties files. The `I18nPropertiesSyncTest` mandates that all strings are translated across all supported locales.
+All user-facing strings MUST be internationalized using Spring's message source mechanism. The `I18nPropertiesSyncTest` MUST pass, ensuring all strings are translated across all supported locales.
 
 ## Development Workflow
 
 ### Code Reviews
-All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to the principles outlined in this constitution, code quality, and test coverage.
+All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to this constitution, code quality, and test coverage.
 
-### Testing Gates
-Successful execution of all unit and integration tests is a mandatory gate for merging code. CI/CD pipelines MUST enforce this requirement.
+### Dependency Management
+Dependencies MUST be managed via Maven. New dependencies MUST be added with careful consideration of their impact on the project and security.
+
+### Build and CI/CD
+The project MUST have a fully automated build process. Continuous Integration (CI) MUST be configured to run all tests on every commit. Continuous Deployment (CD) pipelines MAY be established for automated deployments to staging and production environments.
 
 ## Governance
-This constitution supersedes all other development practices for the saritha-atmuri-xoriant/spring-petclinic repository. Amendments to this constitution require a formal proposal, documented justification, and approval by the project lead. All amendments MUST include a plan for migrating existing code to comply with the changes. All pull requests and code reviews MUST verify compliance with this constitution.
+This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, documented justification, and approval by a majority of core maintainers. All pull requests and code reviews must verify compliance with this constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
