@@ -3,31 +3,37 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Components MUST NOT cross layer boundaries in an unintended manner.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Cross-layer dependencies MUST follow a strict top-down flow (e.g., Controllers depend on Services, Services depend on Repositories). Direct dependencies between non-adjacent layers are prohibited.
 
-### II. Spring Boot Convention Over Configuration
-The project MUST leverage Spring Boot's auto-configuration capabilities where applicable. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be clearly documented and justified.
+### II. Spring Boot Convention and Configuration
+The project MUST leverage Spring Boot conventions for auto-configuration and dependency injection. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be clearly defined and minimal, relying on Spring Boot's auto-configuration capabilities where possible.
 
 ### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and/or integration tests. Existing tests MUST pass. Integration tests MUST cover critical paths and inter-layer interactions, as evidenced by files like `OwnerControllerTests.java`, `ClinicServiceTests.java`, and database integration tests (`MySqlIntegrationTests.java`, `PostgresIntegrationTests.java`).
+All new features and bug fixes MUST include corresponding unit and integration tests. Unit tests MUST focus on individual components, while integration tests MUST verify interactions between components and with external systems (e.g., database). Test coverage MUST be maintained above 80% for critical components.
 
 ### IV. Data Persistence Abstraction
-The project MUST utilize Spring Data JPA for data access. Repository interfaces MUST abstract persistence concerns, as demonstrated by `OwnerRepository.java`, `PetTypeRepository.java`, and `VetRepository.java`.
+Data access logic MUST be encapsulated within Repository interfaces (e.g., `OwnerRepository`, `PetTypeRepository`). These repositories MUST abstract the underlying persistence mechanism (e.g., JPA, JDBC). Domain entities (e.g., `Owner`, `Pet`) MUST be POJOs with minimal persistence-specific annotations.
 
 ### V. RESTful API Design
-Controller classes (e.g., `OwnerController.java`, `PetController.java`) MUST adhere to RESTful principles for API design, utilizing standard HTTP methods and status codes.
+Controllers (e.g., `OwnerController`, `VetController`) MUST expose RESTful endpoints following standard HTTP methods and status codes. Request and response payloads SHOULD be designed for clarity and efficiency, leveraging JSON as the primary format.
+
+## Additional Constraints
+
+### Security Requirements
+All sensitive data handling and access control mechanisms MUST adhere to Spring Security best practices. Input validation MUST be implemented at the controller layer to prevent common web vulnerabilities.
+
+### Performance Standards
+Database queries MUST be optimized to ensure efficient data retrieval. Caching mechanisms (e.g., JCache) SHOULD be employed judiciously for frequently accessed, read-heavy data to improve response times.
 
 ## Development Workflow
 
-The standard development workflow involves:
-1. **Feature/Bug Fix Identification**: Clearly define the scope of the change.
-2. **Branching**: Create a new feature branch from the main development branch.
-3. **Development**: Implement the change, adhering to the Core Principles. Write unit and integration tests.
-4. **Local Testing**: Run all tests to ensure no regressions.
-5. **Code Review**: Submit a Pull Request (PR) for review by at least one other team member. The PR MUST include a clear description of the changes and link to any relevant issue.
-6. **CI/CD Pipeline**: Upon merging to the main branch, the CI/CD pipeline will automatically build, test, and deploy the application.
+### Code Review Process
+All code changes submitted via Pull Requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to architectural principles, coding standards, and test coverage requirements.
+
+### Quality Gates
+Automated checks, including static analysis, unit tests, and integration tests, MUST pass successfully before a Pull Request can be merged. Continuous Integration (CI) pipelines MUST enforce these quality gates.
 
 ## Governance
-This constitution supersedes all other informal development practices. Amendments to this constitution require a formal proposal, review by the core development team, and a majority approval. Any approved amendments MUST be documented, including the rationale for the change and a plan for migrating existing code or practices if necessary. All Pull Requests and code reviews MUST verify compliance with this constitution. Complexity MUST be justified with clear documentation.
+This Constitution supersedes all other informal practices and guidelines. Amendments to this Constitution require a formal proposal, documented justification, and approval by a majority of the core development team. Any approved amendments MUST include a migration plan to ensure existing code adheres to the new principles. All Pull Requests and code reviews MUST explicitly verify compliance with this Constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
