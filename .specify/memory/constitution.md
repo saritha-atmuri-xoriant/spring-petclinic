@@ -3,31 +3,29 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Model, Configuration, Service, etc.). Components MUST NOT directly depend on components from layers lower than their immediate predecessor (e.g., Controllers MUST NOT directly call Repositories; they MUST go through Services).
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Cross-layer dependencies MUST follow a strict top-down flow (e.g., Controllers depend on Services, Services depend on Repositories). Direct dependencies between unrelated layers (e.g., Controllers directly accessing Repositories) are forbidden.
 
-### II. Spring Boot Conventions
-The project MUST leverage Spring Boot's auto-configuration and idiomatic patterns. Configuration files (e.g., `application.properties`, `application.yml`) MUST be used for application-wide settings. Spring annotations (e.g., `@Controller`, `@Repository`, `@Service`, `@Configuration`) MUST be used to define component roles.
+### II. Spring Boot Convention and Configuration
+The project MUST leverage Spring Boot conventions for auto-configuration and dependency injection. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be clearly defined and adhere to Spring's configuration best practices. Externalized configuration (e.g., `application.properties`) MUST be used for environment-specific settings.
 
-### III. Test Coverage and Quality Gates (NON-NEGOTIABLE)
-All new features and bug fixes MUST include comprehensive unit and integration tests. Unit tests MUST cover individual component logic, while integration tests MUST verify interactions between components and with external systems (like databases). A minimum test coverage threshold (e.g., 80%) MUST be maintained for all production code. All tests MUST pass before code can be merged.
+### III. Test Coverage and Integration
+Comprehensive unit tests MUST be provided for all business logic and controller components. Integration tests (e.g., `OwnerControllerTests.java`, `ClinicServiceTests.java`, `MySqlIntegrationTests.java`) MUST verify the interaction between different layers and external dependencies like databases. All new features or significant changes MUST include corresponding unit and integration tests.
 
-### IV. Data Persistence Abstraction
-Data access logic MUST be encapsulated within Repository interfaces (e.g., `OwnerRepository`, `VetRepository`), leveraging Spring Data JPA. Domain entities (e.g., `Owner`, `Pet`, `Vet`) MUST be mapped to database tables using JPA annotations. Direct SQL queries within controllers or services are prohibited, except for highly specialized, performance-critical scenarios with explicit architectural approval.
+### IV. Domain Model Integrity
+Domain entities (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST be POJOs with clear responsibilities. They MUST utilize Jakarta Persistence annotations for ORM mapping and Jakarta Bean Validation annotations for data integrity. Relationships between entities MUST be explicitly defined and managed.
 
 ### V. Observability and Logging
-All significant application events, errors, and request flows MUST be logged using a structured logging framework (e.g., SLF4j with Logback). Log messages MUST be informative and actionable. The project MUST include mechanisms for monitoring application health and performance, potentially through Spring Boot Actuator or similar tools.
+Application behavior and potential issues MUST be observable through structured logging. All significant events, errors, and request flows MUST be logged using appropriate log levels. The `PetClinicApplication.java` and associated configurations SHOULD be reviewed for any existing logging or observability patterns.
 
 ## Development Workflow
 
-The standard development workflow involves:
-1.  **Feature Branching**: Create a new branch for each feature or bug fix.
-2.  **Development**: Implement the feature, adhering to the core principles. Write unit and integration tests concurrently.
-3.  **Local Testing**: Run all tests locally to ensure correctness and coverage.
-4.  **Code Review**: Submit a Pull Request (PR) for review by at least one other team member. The PR MUST include a clear description of changes and rationale. Reviewers MUST verify adherence to this constitution.
-5.  **CI/CD Pipeline**: Upon merging to the main branch, the CI/CD pipeline will automatically build, test, and deploy the application.
+### Code Review and Quality Gates
+All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to the core principles, code quality, test coverage, and documentation. Automated checks, including static analysis and unit/integration tests, MUST pass before a pull request can be merged.
+
+### Versioning and Breaking Changes
+The project follows Semantic Versioning (MAJOR.MINOR.PATCH). Breaking changes MUST be clearly documented in the release notes and require a MAJOR version increment. All dependencies MUST be managed and kept up-to-date to mitigate security vulnerabilities and leverage new features.
 
 ## Governance
-
-This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, a documented justification, and approval from at least two-thirds of the core development team. Any approved amendments MUST include a migration plan for existing code and documentation updates. All Pull Requests and code reviews MUST verify compliance with this constitution.
+This Constitution supersedes all other informal development practices. Amendments to this Constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team. Any approved amendments MUST include a plan for migrating existing code and practices to comply with the new rules. All pull requests and code reviews MUST verify compliance with this Constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-09-01 | **Last Amended**: 2026-09-01
