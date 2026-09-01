@@ -1,40 +1,5 @@
-# Spring Petclinic Constitution
-
-## Core Principles
-
-### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Components MUST NOT cross layer boundaries inappropriately (e.g., a Controller directly calling a Repository).
-
-### II. Spring Boot Convention Over Configuration
-The project MUST leverage Spring Boot's auto-configuration capabilities. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be minimal and clearly justified, adhering to established Spring patterns.
-
-### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and integration tests. Unit tests MUST verify individual component logic, while integration tests MUST validate interactions between layers and external systems (e.g., database, external APIs). Test coverage MUST be maintained at a high level, with specific targets defined in the Quality Gates section.
-
-### IV. Data Persistence Abstraction
-The project MUST utilize Spring Data JPA for data access. Repository interfaces (e.g., `OwnerRepository`, `VetRepository`) MUST abstract the underlying persistence mechanism, ensuring that business logic is not coupled to specific database implementations.
-
-### V. RESTful API Design
-Controllers (e.g., `OwnerController`, `PetController`) MUST expose RESTful endpoints following standard HTTP methods and status codes. Request and response payloads SHOULD be designed for clarity and efficiency, typically using JSON.
-
-## Development Workflow and Quality Gates
-
-### Code Review and Compliance
-All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to the core principles, coding standards, and test coverage requirements. Automated checks (e.g., static analysis, test execution) MUST pass before a pull request can be merged.
-
-### Testing Strategy
-- **Unit Tests**: Focus on testing individual classes and methods in isolation. Mock dependencies where necessary.
-- **Integration Tests**: Verify the interaction between different components and layers, including database interactions and API calls. The project includes specific integration tests for different database technologies (MySQL, PostgreSQL).
-- **End-to-End Tests**: While not explicitly detailed in the provided files, the presence of `SpringBootTest` annotations suggests an expectation for end-to-end validation of application flows.
-
-### Deployment Readiness
-A build is considered deployment-ready when:
-- All automated tests pass.
-- Code review is complete and approved.
-- Static analysis tools report no critical issues.
-- Performance benchmarks (if defined) are met.
-
-## Governance
-This Constitution supersedes all other project-specific practices and guidelines. Amendments to this Constitution require a formal proposal, review by the core development team, and a majority approval. Any amendments MUST include a clear migration plan if existing practices need to be updated. Compliance with this Constitution is mandatory for all contributions.
-
-**Version**: 1.0.0 | **Ratified**: 2026-09-01 | **Last Amended**: 2026-09-01
+{
+  "status": "error",
+  "message": "Bedrock HTTP 400: {\"message\":\"Error 002: Access to Bedrock models is not allowed for this account\"}",
+  "traceback": "Traceback (most recent call last):\n  File \"/app/mcp_server.py\", line 1317, in generate_constitution\n    output_path = agent.generate(owner, repo)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/agents/constitution_agent.py\", line 214, in generate\n    constitution_md = llm.generate(prompt)\n                      ^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/tenacity/__init__.py\", line 331, in wrapped_f\n    return copy(f, *args, **kw)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/tenacity/__init__.py\", line 470, in __call__\n    do = self.iter(retry_state=retry_state)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/tenacity/__init__.py\", line 371, in iter\n    result = action(retry_state)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/tenacity/__init__.py\", line 393, in <lambda>\n    self._add_action_func(lambda rs: rs.outcome.result())\n                                     ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/concurrent/futures/_base.py\", line 449, in result\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/concurrent/futures/_base.py\", line 401, in __get_result\n    raise self._exception\n  File \"/usr/local/lib/python3.12/site-packages/tenacity/__init__.py\", line 473, in __call__\n    result = fn(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/app/llm/bedrock_client.py\", line 249, in generate\n    raise RuntimeError(\nRuntimeError: Bedrock HTTP 400: {\"message\":\"Error 002: Access to Bedrock models is not allowed for this account\"}\n"
+}
