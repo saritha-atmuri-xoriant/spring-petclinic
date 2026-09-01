@@ -3,37 +3,37 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Components MUST NOT cross layer boundaries inappropriately.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). Components MUST NOT cross layer boundaries in an unintended manner.
 
-### II. Spring Boot Convention Compliance
-The project MUST leverage Spring Boot conventions for configuration, auto-configuration, and dependency management. All new components MUST be Spring-managed beans where applicable.
+### II. Spring Boot Convention Over Configuration
+The project MUST leverage Spring Boot's auto-configuration capabilities. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be minimal and clearly justified, adhering to established Spring patterns.
 
-### III. Test Coverage Mandate (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by comprehensive unit and integration tests. Existing functionality MUST achieve a minimum of 80% test coverage. Integration tests MUST cover interactions between layers and external services.
+### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
+All new features and bug fixes MUST be accompanied by unit and integration tests. Existing functionality MUST maintain a high level of test coverage, as evidenced by the numerous test files present in the `src/test` directory. Integration tests MUST cover critical paths and interactions between layers.
 
-### IV. JPA Repository Best Practices
-All data access MUST be performed through Spring Data JPA repositories. Custom queries MUST be defined within repository interfaces, and repository methods MUST be designed for clarity and efficiency.
+### IV. Data Access Abstraction
+The project MUST utilize Spring Data JPA for data access. Repository interfaces (e.g., `OwnerRepository`, `PetTypeRepository`) MUST be defined and implemented by Spring Data JPA, abstracting direct database interactions.
 
 ### V. RESTful API Design
-Controller layer components MUST expose RESTful APIs following standard HTTP methods and status codes. Request and response payloads SHOULD be JSON.
+Controller classes (e.g., `OwnerController`, `PetController`) MUST expose RESTful endpoints following standard HTTP methods and status codes. The API design SHOULD prioritize clarity and ease of use for client applications.
 
 ## Additional Constraints
 
-### Security Requirements
-All sensitive data handling MUST adhere to Spring Security best practices. Input validation MUST be implemented at the controller layer to prevent common web vulnerabilities.
+### Technology Stack
+The project MUST be built using Java and Spring Boot. Dependencies are managed via Maven. The project supports multiple database integrations (e.g., MySQL, PostgreSQL) as indicated by integration test classes.
 
-### Performance Standards
-Database queries MUST be optimized to avoid N+1 select problems. Caching mechanisms (e.g., JCache) MUST be utilized where appropriate for frequently accessed, relatively static data.
+### Internationalization (i18n)
+All user-facing strings MUST be internationalized using Spring's message source mechanism. The `I18nPropertiesSyncTest` enforces that all strings are translated across all supported locales.
 
 ## Development Workflow
 
-### Code Review Process
+### Code Reviews
 All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to architectural principles, coding standards, and test coverage requirements.
 
 ### Quality Gates
-Automated checks, including static analysis, unit tests, and integration tests, MUST pass successfully before a pull request can be merged. Continuous Integration (CI) pipelines MUST enforce these gates.
+Automated checks, including compilation, static analysis, and all tests (unit and integration), MUST pass before a pull request can be merged.
 
 ## Governance
-This Constitution supersedes all other development practices for the saritha-atmuri-xoriant/spring-petclinic repository. Amendments to this Constitution require a formal proposal, documented justification, and approval by a majority of the core development team. All existing code MUST be migrated to comply with amended principles within a reasonable timeframe, to be defined per amendment. All pull requests and code reviews MUST verify compliance with this Constitution.
+This constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team. Any approved amendments MUST include a migration plan if necessary to bring existing code into compliance. All pull requests and code reviews MUST verify compliance with this constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-09-01 | **Last Amended**: 2026-09-01
