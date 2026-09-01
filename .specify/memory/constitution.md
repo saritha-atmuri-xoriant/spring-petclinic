@@ -3,33 +3,37 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Cross-layer dependencies MUST follow a strict top-down flow (e.g., Controllers depend on Services, Services depend on Repositories). Direct dependencies between unrelated layers (e.g., Controllers directly accessing Repositories) are forbidden.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Service, Test). Components MUST NOT cross layer boundaries in an unintended manner.
 
-### II. Spring Boot Convention and Configuration
-The project MUST leverage Spring Boot conventions for auto-configuration and dependency injection. Custom configurations (e.g., `CacheConfiguration.java`, `WebConfiguration.java`) MUST be clearly defined and adhere to Spring's configuration patterns. Externalized configuration properties SHOULD be used where appropriate.
+### II. Spring Boot Conventions
+The project MUST leverage Spring Boot's auto-configuration and idiomatic patterns. Configuration MUST be managed via `application.properties` or `@Configuration` classes. Dependency Injection MUST be managed by Spring.
 
-### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and integration tests. Unit tests MUST verify individual component logic, while integration tests MUST validate interactions between components and with external systems (e.g., database, external APIs). Test coverage MUST be maintained at a high level, with specific targets defined in the Quality Gates section.
+### III. Test Coverage (NON-NEGOTIABLE)
+All new features and significant bug fixes MUST be accompanied by comprehensive unit and integration tests. Unit tests MUST focus on individual component logic, while integration tests MUST verify interactions between components and layers, including database persistence and API endpoints. Existing tests MUST be maintained and updated.
 
-### IV. Domain Model Integrity
-The domain model classes (e.g., `Owner.java`, `Pet.java`, `Vet.java`) MUST encapsulate core business logic and data. They MUST be POJOs (Plain Old Java Objects) with appropriate JPA annotations for persistence and validation annotations for data integrity. Domain entities MUST NOT contain direct web or service layer logic.
+### IV. Data Persistence Integrity
+All data persistence operations MUST be handled exclusively by the Repository layer, utilizing Spring Data JPA. Domain entities MUST be properly annotated for persistence. Data access logic SHOULD NOT be duplicated across different layers.
 
-### V. Observability and Debuggability
-All components SHOULD expose meaningful logs for debugging and monitoring. The application MUST be designed to facilitate tracing of requests and events across different layers. Spring Boot Actuator or similar mechanisms SHOULD be considered for production environments.
+### V. RESTful API Design
+Controller layer components MUST expose RESTful endpoints following standard HTTP methods and status codes. Request and response payloads SHOULD be well-defined and consistent.
 
-## Development Workflow and Quality Gates
+## Additional Constraints
 
-### Development Workflow
-1. **Feature Branching**: All development MUST occur on feature branches derived from the main development branch.
-2. **Code Reviews**: All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to architectural principles, coding standards, and test coverage.
-3. **Automated Builds and Tests**: Continuous Integration (CI) pipelines MUST be configured to automatically build the project and run all unit and integration tests upon every commit to a feature branch and before merging to the main development branch.
+**Technology Stack**: The project MUST utilize Java, Spring Boot, Spring Data JPA, and Thymeleaf for templating. Database interactions are expected to be with a relational database (e.g., MySQL, PostgreSQL, H2).
 
-### Quality Gates
-1. **Test Coverage**: Unit and integration test coverage MUST remain above 80%. Any deviation requires explicit justification and approval.
-2. **Static Analysis**: Static code analysis tools (e.g., SonarQube, Checkstyle) MUST be integrated into the CI pipeline. Code MUST pass all critical and major rule checks.
-3. **Build Success**: All automated builds and tests MUST pass successfully before a pull request can be merged.
+**Containerization**: The project MUST be containerizable, with considerations for Docker and Kubernetes as evidenced by the `k8s/` directory.
+
+**Development Environment**: The `.devcontainer/` directory indicates a commitment to reproducible development environments.
+
+## Development Workflow
+
+**Code Reviews**: All pull requests MUST undergo at least one thorough code review by a team member. Reviews MUST verify adherence to these principles, code quality, and test coverage.
+
+**Testing Gates**: Successful execution of all unit and integration tests is a mandatory gate for merging any code.
+
+**Continuous Integration**: Automated builds and tests MUST be executed on every commit to the main development branches.
 
 ## Governance
-This Constitution supersedes all other informal development practices. Amendments to this Constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team. Any approved amendments MUST include a plan for migrating existing code and practices to comply with the new rules. All pull requests and code reviews MUST verify compliance with this Constitution. Complexity introduced into the codebase MUST be justified with clear documentation and architectural diagrams.
+This Constitution supersedes all other informal practices and documentation. Amendments to this Constitution require a formal proposal, documented justification, team approval, and a migration plan if necessary. Compliance with this Constitution is mandatory for all code merged into the main branches.
 
 **Version**: 1.0.0 | **Ratified**: 2026-09-01 | **Last Amended**: 2026-09-01
