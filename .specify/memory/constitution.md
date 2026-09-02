@@ -1,32 +1,42 @@
-# Spring PetClinic Constitution
+# Spring Petclinic Constitution
 
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). The separation of concerns MUST be strictly maintained to ensure modularity and maintainability.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). Components MUST NOT cross layer boundaries inappropriately (e.g., a Controller directly calling a Repository).
 
-### II. Spring Boot Convention Compliance
-The project MUST leverage Spring Boot conventions for configuration, dependency injection, and application bootstrapping. This includes adhering to standard annotation usage and property management practices.
+### II. Spring Boot Convention Over Configuration
+The project MUST leverage Spring Boot's auto-configuration capabilities where applicable. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be clearly defined and justified.
 
-### III. Test-Driven Development (TDD) and Comprehensive Testing
-All new features and bug fixes MUST be developed with a test-first approach. Unit tests MUST cover individual components, while integration tests MUST validate the interactions between layers and external services. Test coverage MUST be maintained at a high level, with specific focus on critical business logic and API endpoints.
+### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
+All new features and bug fixes MUST be accompanied by unit and/or integration tests. Existing tests MUST pass. Integration tests MUST cover critical paths, data access, and inter-layer communication.
 
-### IV. Data Persistence Abstraction
-Data access MUST be abstracted through Spring Data repositories. Direct SQL manipulation within business logic or controllers is forbidden. The repository layer MUST encapsulate all data persistence concerns.
+### IV. JPA Entity Integrity
+JPA entities (e.g., `Owner`, `Pet`, `Vet`) MUST adhere to standard JPA annotations and validation constraints. Relationships between entities MUST be correctly defined and managed.
 
-### V. RESTful API Design
-Controllers MUST expose functionality via RESTful APIs. Endpoints MUST follow standard HTTP methods (GET, POST, PUT, DELETE) and use appropriate status codes. Data transfer objects (DTOs) MAY be used for request and response payloads where beneficial for API clarity.
+### V. Observability and Logging
+Application behavior and errors MUST be logged using structured logging. Critical operations and potential failure points SHOULD be instrumented for monitoring.
 
 ## Additional Constraints
 
-The project MUST utilize Java as the primary programming language and Spring Boot as the core framework. Database interactions are expected to be managed via JPA and Spring Data. Internationalization (i18n) support MUST be maintained, with all user-facing strings externalized to resource bundles.
+### Technology Stack
+The project MUST utilize Java, Spring Boot, Spring Data JPA, and Thymeleaf for its core technology stack. External dependencies MUST be managed via Maven and kept up-to-date.
+
+### Database Agnosticism (via Spring Data)
+While integration tests may target specific databases (e.g., `MySqlIntegrationTests`, `PostgresIntegrationTests`), the core application logic SHOULD remain agnostic to the underlying database implementation, relying on Spring Data JPA abstractions.
 
 ## Development Workflow
 
-Code changes MUST be submitted via Pull Requests (PRs). Each PR MUST include comprehensive unit and integration tests. All PRs MUST undergo a thorough code review by at least one other team member. Automated checks, including static analysis and test execution, MUST pass before a PR can be merged.
+### Code Reviews
+All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to this constitution, code quality, and test coverage.
+
+### Quality Gates
+Automated checks, including compilation, static analysis, and all unit/integration tests, MUST pass before a pull request can be merged.
+
+### Deployment
+Deployment procedures MUST be documented and automated where possible. Rollback strategies SHOULD be in place for critical deployments.
 
 ## Governance
-
-This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this Constitution require a formal proposal, documented justification, and approval by a majority of the core development team. All code merged into the repository MUST demonstrably comply with the principles outlined herein. Compliance with this Constitution will be periodically reviewed as part of the development process.
+This constitution supersedes all other development practices for the saritha-atmuri-xoriant/spring-petclinic repository. Amendments to this constitution require a formal proposal, review by key stakeholders, and a documented migration plan if necessary. All pull requests and code reviews must verify compliance with this constitution. Complexity must be justified.
 
 **Version**: 1.0.0 | **Ratified**: 2026-09-02 | **Last Amended**: 2026-09-02
