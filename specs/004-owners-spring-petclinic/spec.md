@@ -2,7 +2,7 @@
 
 **Feature Branch**: `004-owners-spring-petclinic`
 
-**Created**: 2026-09-01
+**Created**: 2026-09-02
 
 **Status**: Draft
 
@@ -14,141 +14,101 @@
 
 Given an owner with the last name "Franklin" exists, When a user searches for owners with the last name "Franklin", Then the system redirects to the owner's details page.
 
-**Why this priority**: This is a core functionality for navigating and accessing owner information, essential for basic system usability.
+**Why this priority**: This is a core functionality for managing and accessing owner information, essential for day-to-day operations.
 
 **Independent Test**: Can be fully tested by navigating to the owner search page, entering "Franklin" in the last name field, and verifying redirection to the correct owner's detail page. Delivers the ability to locate specific owners.
 
 **Acceptance Scenarios**:
 
-1. **Given** an owner named "George Franklin" exists in the system, **When** a user searches for owners with the last name "Franklin", **Then** the system displays the details for "George Franklin".
-2. **Given** multiple owners with the last name "Smith" exist, **When** a user searches for owners with the last name "Smith", **Then** the system displays a list of all owners with the last name "Smith".
-3. **Given** no owners with the last name "NonExistent" exist, **When** a user searches for owners with the last name "NonExistent", **Then** the system displays a "Owner not found" message.
+1. **Given** an owner named "George Franklin" exists in the system, **When** a user searches for owners with the last name "Franklin", **Then** the system displays the details for George Franklin.
+2. **Given** multiple owners exist, including "George Franklin" and "Betty Davis", **When** a user searches for owners with the last name "Franklin", **Then** the system displays the details for George Franklin and not Betty Davis.
 
 ---
 
-### User Story 2 - Create a New Owner (Priority: P2)
+### User Story 2 - Find Owners with Partial Last Name Match (Priority: P2)
 
-Given a user is on the new owner form, When they submit a valid owner form, Then the owner is created and the user is redirected to the owner's list.
+Given multiple owners whose last names start with "Frank" exist, When a user searches for owners with the last name "Frank", Then a list of owners whose last names start with "Frank" is displayed.
 
-**Why this priority**: Adding new owners is a fundamental operation for populating and managing the pet clinic's client base.
+**Why this priority**: This provides flexibility in searching when the exact last name is not known, improving user experience.
 
-**Independent Test**: Can be fully tested by navigating to the new owner form, filling in all required valid fields, submitting the form, and verifying redirection to the owner list page with the new owner present. Delivers the ability to onboard new clients.
+**Independent Test**: Can be fully tested by searching for a partial last name (e.g., "Frank") and verifying that all owners whose last names begin with "Frank" are displayed in a list. Delivers the ability to find owners with partial name matches.
 
 **Acceptance Scenarios**:
 
-1. **Given** a user is on the new owner form, **When** they enter valid details for first name, last name, address, city, and telephone, **Then** the owner is successfully created and the user is redirected to the owner list page.
-2. **Given** a user is on the new owner form, **When** they enter valid details and add at least one pet with a valid name and type, **Then** the owner and their pet are successfully created and the user is redirected to the owner list page.
+1. **Given** owners "George Franklin", "Frank Smith", and "Jane Doe" exist, **When** a user searches for owners with the last name "Frank", **Then** the system displays a list containing "George Franklin" and "Frank Smith".
+2. **Given** no owners have a last name starting with "Fran", **When** a user searches for owners with the last name "Fran", **Then** the system displays a message indicating no owners were found.
 
 ---
 
-### User Story 3 - Handle Invalid Owner Creation (Priority: P3)
+### User Story 3 - Handle Empty Last Name Search (Priority: P3)
 
-Given a user is on the new owner form, When they submit an invalid owner form, Then an error message is displayed and the user remains on the creation form.
+Given multiple owners exist, When a user searches for owners with an empty last name, Then all owners are displayed on the owners list page.
 
-**Why this priority**: Ensures data integrity and guides users to correct input, improving the user experience and data quality.
+**Why this priority**: This ensures that users can retrieve a complete list of all owners when no specific search criteria are provided.
 
-**Independent Test**: Can be fully tested by navigating to the new owner form, intentionally submitting invalid data (e.g., blank address, invalid phone number), and verifying that error messages are displayed and the user remains on the form. Delivers robust data validation.
-
-**Acceptance Scenarios**:
-
-1. **Given** a user is on the new owner form, **When** they submit the form with a blank address, **Then** an error message indicating "Address must not be blank" is displayed, and the user remains on the form.
-2. **Given** a user is on the new owner form, **When** they submit the form with a telephone number that is not 10 digits, **Then** an error message indicating "Invalid telephone number" is displayed, and the user remains on the form.
-3. **Given** a user is on the new owner form, **When** they submit the form with a blank last name, **Then** an error message indicating "Last name must not be blank" is displayed, and the user remains on the form.
-
----
-
-### User Story 4 - Create a New Pet for an Owner (Priority: P1)
-
-Given an existing owner, When a user navigates to the owner's detail page and initiates pet creation, Then the system allows the user to add a new pet with a name, birth date, and type.
-
-**Why this priority**: Managing pets is central to the pet clinic's operations, and adding new pets is a frequent and essential task.
-
-**Independent Test**: Can be fully tested by selecting an existing owner, navigating to their detail page, initiating the pet creation process, filling in valid pet details, and verifying the pet is associated with the owner. Delivers the ability to register new pets.
+**Independent Test**: Can be fully tested by navigating to the owner search page, leaving the last name field empty, and verifying that all existing owners are displayed. Delivers the ability to view all owners.
 
 **Acceptance Scenarios**:
 
-1. **Given** an existing owner, **When** the user adds a new pet with a valid name, birth date, and selects a pet type, **Then** the pet is successfully created and associated with the owner.
-2. **Given** an existing owner, **When** the user attempts to add a pet with a blank name, **Then** a validation error is displayed, and the pet is not created.
-3. **Given** an existing owner, **When** the user attempts to add a pet without selecting a pet type, **Then** a validation error is displayed, and the pet is not created.
-
----
-
-### User Story 5 - Update an Existing Pet's Name (Priority: P2)
-
-Given an existing pet associated with an owner, When a user navigates to the pet's details and initiates an update, Then the system allows the user to change the pet's name.
-
-**Why this priority**: Allows for correction of errors or changes in pet naming conventions, maintaining accurate records.
-
-**Independent Test**: Can be fully tested by selecting an existing pet, navigating to its details, changing the name to a new valid name, and verifying the update. Delivers the ability to correct pet names.
-
-**Acceptance Scenarios**:
-
-1. **Given** an existing pet, **When** the user updates the pet's name to a new valid name, **Then** the pet's name is successfully updated.
-2. **Given** an existing pet, **When** the user attempts to update the pet's name to a blank name, **Then** a validation error is displayed, and the name is not updated.
-3. **Given** an existing pet, **When** the user attempts to update the pet's name to a name that already exists for the same owner, **Then** a validation error is displayed, and the name is not updated.
+1. **Given** multiple owners exist in the system, **When** a user searches for owners with an empty last name, **Then** the system displays a list of all registered owners.
+2. **Given** no owners exist in the system, **When** a user searches for owners with an empty last name, **Then** the system displays a message indicating no owners were found.
 
 ---
 
 ### Edge Cases
 
-- **Blank Address**: Owner creation/update with a blank address → validation error.
-- **Blank City**: Owner creation/update with a blank city → validation error.
-- **Invalid Telephone Format**: Owner creation/update with a telephone number not matching the 10-digit pattern → validation error.
-- **Non-existent Owner ID**: Attempting to access or modify an owner with an ID that does not exist → `IllegalArgumentException` is thrown.
-- **Blank Pet Name**: Pet creation/update with a blank name → validation error.
-- **Missing Pet Type**: Pet creation/update without selecting a pet type → validation error.
-- **Invalid Pet Birth Date**: Pet creation/update with a null birth date → validation error.
-- **Duplicate Pet Name for Same Owner**: Attempting to add a pet with a name that already exists for the same owner → validation error.
-- **Invalid Visit Date**: Visit creation/update with a date that is not after the current date → validation error.
-- **Non-existent Pet ID for Owner**: Attempting to create a visit for a pet that does not exist for a given owner → `IllegalArgumentException` is thrown.
-- **Owner Not Found During Find**: Searching for owners with a last name that yields no results → validation error indicating "not found".
-- **Exception Trigger**: Navigating to the `/oups` endpoint → `RuntimeException` is thrown, showcasing exception handling.
+- What happens when an owner is created or updated with a blank address? → A validation error is displayed, and the operation fails.
+- What happens when an owner is created or updated with a blank city? → A validation error is displayed, and the operation fails.
+- What happens when an owner's telephone number does not match the 10-digit pattern? → A validation error is displayed, and the operation fails.
+- What happens when a pet is created or updated with a blank name? → A validation error is displayed, and the operation fails.
+- What happens when a pet is created or updated without selecting a pet type? → A validation error is displayed, and the operation fails.
+- What happens when a pet is created or updated without providing a birth date? → A validation error is displayed, and the operation fails.
+- What happens when attempting to add a pet with a name that already exists for the same owner? → A validation error is displayed, and the operation fails.
+- What happens when attempting to create a visit with a date that is not after the current date? → A validation error is displayed, and the operation fails.
+- What happens when attempting to find an owner with an ID that does not exist? → An `IllegalArgumentException` is thrown, and an appropriate error message is displayed to the user.
+- What happens when attempting to create a visit for a pet belonging to a non-existent owner? → An `IllegalArgumentException` is thrown, and an appropriate error message is displayed to the user.
+- What happens when attempting to create a visit for a non-existent pet belonging to an owner? → An `IllegalArgumentException` is thrown, and an appropriate error message is displayed to the user.
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: System MUST allow the creation of new pets for an owner.
-- **FR-002**: System MUST allow updating an existing pet's name.
-- **FR-003**: System SHOULD validate pet data during creation or update.
-- **FR-004**: System SHOULD allow searching for owners by last name.
-- **FR-005**: System SHOULD display a list of pets associated with an owner.
-- **FR-006**: System MUST disallow the ID field and any fields within the owner object that contain an ID when creating or updating an owner.
-- **FR-007**: System MUST disallow the ID field and any fields within the visit object that contain an ID when creating or updating a visit.
-- **FR-008**: System MUST enforce that an owner's first name is not blank.
-- **FR-009**: System MUST enforce that an owner's last name is not blank.
-- **FR-010**: System MUST enforce that an owner's address is not blank.
-- **FR-011**: System MUST enforce that an owner's city is not blank.
-- **FR-012**: System MUST enforce that an owner's telephone number is exactly 10 digits.
-- **FR-013**: System MUST enforce that a pet's name is not blank.
-- **FR-014**: System MUST enforce that a pet's name is unique for a given owner.
-- **FR-015**: System MUST enforce that a visit's description is not blank.
+- **FR-001**: System MUST allow the creation of a new owner.
+- **FR-002**: System MUST allow the update of an existing owner's details (address, city, telephone).
+- **FR-003**: System MUST allow the creation of a new pet for a given owner.
+- **FR-004**: System MUST allow the update of an existing pet's name and birth date.
+- **FR-005**: System MUST allow the creation of a new visit for a given pet.
+- **FR-006**: System MUST validate owner information during creation or update (address, city, telephone).
+- **FR-007**: System MUST validate pet information during creation or update (name, type, birth date).
+- **FR-008**: System MUST validate visit information during creation (date, description).
+- **FR-009**: System MUST allow searching for owners by last name.
+- **FR-010**: System MUST allow retrieving a specific owner by their ID.
+- **FR-011**: System MUST prevent a pet's name from being duplicated within the same owner.
 
 ### Key Entities *(include if feature involves data)*
 
-- **Owner**: Represents a pet owner, including their contact information (address, city, telephone) and associated pets.
-- **Pet**: Represents a pet belonging to an owner, including its name, birth date, and type.
-- **PetType**: Represents the category of a pet (e.g., Cat, Dog).
-- **Visit**: Represents a veterinary visit for a pet, including the date and a description.
+- **Owner**: Represents an individual owner of pets. Attributes include first name, last name, address, city, and telephone number. An owner can have multiple pets.
+- **Pet**: Represents an animal owned by an owner. Attributes include name, birth date, and type. A pet belongs to one owner and can have multiple visits.
+- **PetType**: Represents the species of a pet (e.g., Cat, Dog).
+- **Visit**: Represents a veterinary visit for a pet. Attributes include date and description. A visit is associated with one pet.
 
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
-- **SC-001**: Users can successfully search for and view owner details by last name in under 5 seconds.
-- **SC-002**: New owners can be created with all required valid information in under 2 minutes.
-- **SC-003**: New pets can be added to an existing owner's profile in under 1 minute.
-- **SC-004**: 95% of owner and pet data entries pass validation checks upon submission.
-- **SC-005**: The system correctly handles and displays validation errors for invalid input, guiding users to correct data entry.
+- **SC-001**: Users can successfully create and update owner profiles in under 1 minute.
+- **SC-002**: Users can successfully add a new pet to an owner's profile in under 45 seconds.
+- **SC-003**: Search for owners by last name returns results in under 2 seconds.
+- **SC-004**: 95% of owner and pet data entries are valid according to defined business rules.
+- **SC-005**: The system successfully handles all defined edge cases without crashing or data corruption.
 
 ## Assumptions
 
 - Users have stable internet connectivity.
-- The system will be accessed via a web browser.
-- The primary database is H2, with support for MySQL and PostgreSQL demonstrated in integration tests.
-- Standard web application performance expectations apply for page load times and form submissions.
-- User roles and permissions are not explicitly defined in this feature and are assumed to be handled by a separate authentication/authorization mechanism.
-- The `PetType` entity will have a predefined set of types available for selection (e.g., Cat, Dog, Bird, etc.).
-- The system will use standard date formats for birth dates and visit dates.
-- The `Visit` entity will be associated with a `Pet` which is in turn associated with an `Owner`.
-- The `owners` module is the primary focus, and other modules of the Spring Petclinic application are assumed to be functional and stable.
+- The system will reuse existing authentication mechanisms if applicable (though not explicitly detailed in the provided context).
+- Data validation rules (e.g., telephone format, date formats) are strictly enforced as per the provided business rules.
+- The "owners" module is a core part of the Spring Petclinic application and will be integrated as such.
+- The `SPECIFY_FEATURE_DIRECTORY` will be `specs/001-owners-management` based on sequential numbering.
+- The `spec-template` used is the default one provided.
+- No specific Git branch name was provided by the user, so no `before_specify` hook for branch creation is expected to be triggered with a specific name.
+- No `after_specify` hooks are defined in `.specify/extensions.yml` based on the provided context.
