@@ -3,40 +3,37 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Service, Model, Configuration, Test). Components MUST NOT cross layer boundaries in an unintended manner (e.g., a Controller directly calling a Repository without service intervention).
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). Components MUST NOT cross layer boundaries in an unintended manner. This ensures maintainability and separation of concerns.
 
-### II. Spring Boot Convention and Idiomatic Usage
-The project MUST leverage Spring Boot features and conventions. This includes, but is not limited to, the use of `@SpringBootApplication`, auto-configuration, dependency injection via `@Autowired`, and standard Spring MVC patterns for web controllers.
+### II. Spring Boot Convention Over Configuration
+The project MUST leverage Spring Boot's auto-configuration capabilities where appropriate. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be clearly defined and serve a specific purpose beyond default behavior.
 
 ### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and/or integration tests. Unit tests MUST focus on individual components, while integration tests MUST verify interactions between components and with external systems (e.g., database). Existing tests MUST be maintained and updated as code evolves.
+All new features and bug fixes MUST be accompanied by comprehensive unit and integration tests. Unit tests MUST cover individual components (e.g., `OwnerControllerTests`, `PetValidatorTests`), while integration tests (e.g., `MySqlIntegrationTests`, `PostgresIntegrationTests`) MUST validate interactions between components and with external systems like databases.
 
-### IV. Data Access Abstraction
-Data access logic MUST be encapsulated within Repository interfaces, leveraging Spring Data JPA. Direct SQL queries or manual data manipulation outside of repository methods are discouraged unless absolutely necessary and well-justified.
+### IV. Data Persistence Abstraction
+The project MUST utilize Spring Data JPA for data access. Repository interfaces (e.g., `OwnerRepository`, `VetRepository`) MUST abstract the underlying persistence mechanism, allowing for easier testing and potential future database migrations.
 
-### V. Observability and Configuration
-Application configuration MUST be managed through standard Spring Boot mechanisms (e.g., `application.properties`, environment variables). Logging MUST be implemented using SLF4j/Logback, with appropriate levels for different environments. Cache configurations, as seen in `CacheConfiguration.java`, MUST be clearly defined and utilized.
+### V. RESTful API Design
+Controller classes (e.g., `OwnerController`, `PetController`) MUST adhere to RESTful principles for API design, utilizing standard HTTP methods and status codes for resource manipulation and retrieval.
 
 ## Additional Constraints
 
-### Database Agnosticism (via Test Configurations)
-While integration tests exist for specific databases (e.g., `MySqlIntegrationTests.java`, `PostgresIntegrationTests.java`), the core application logic SHOULD remain as database-agnostic as possible, relying on JPA abstractions.
+### Technology Stack
+The project MUST be built using Java and Spring Boot. Dependencies are managed via Maven (implied by typical Spring Boot project structure). Database interactions are handled through Spring Data JPA.
 
-### Internationalization (i18n) Support
-All user-facing strings MUST be internationalized and managed via properties files, as enforced by `I18nPropertiesSyncTest.java`.
+### Development Environment
+The presence of `.devcontainer/` suggests a preference for containerized development environments, promoting consistency across developer setups.
 
 ## Development Workflow
 
 ### Code Reviews
-All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to architectural principles, coding standards, and test coverage.
+All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to these principles, code quality, and test coverage.
 
-### Branching Strategy
-A Gitflow-like branching strategy is recommended, with `main` for production-ready code, `develop` for integration, and feature branches for new development.
+### Quality Gates
+Automated checks, including compilation, static analysis (if configured), and all tests (unit and integration), MUST pass before a pull request can be merged.
 
-### Dependency Management
-Dependencies MUST be managed via Maven (`pom.xml`). Any new dependencies MUST be carefully evaluated for necessity and licensing.
-
-## Governance
-This constitution supersedes all other informal development practices. Amendments to this constitution require a formal proposal, review by the core development team, and a documented migration plan if necessary. Compliance with this constitution is a mandatory part of the code review process. Any deviation from these principles MUST be explicitly justified and approved.
+Governance
+This constitution supersedes all other informal development practices. Amendments to this constitution require a formal proposal, documented justification, and approval by a majority of the core development team. All existing code MUST be migrated to comply with any ratified amendments within a reasonable timeframe, to be defined per amendment.
 
 **Version**: 1.0.0 | **Ratified**: 2026-09-02 | **Last Amended**: 2026-09-02
