@@ -1,8 +1,8 @@
-# Feature Specification: Owners for Spring Petclinic
+# Feature Specification: Owner Management
 
 **Feature Branch**: `005-owners-spring-petclinic`
 
-**Created**: 2026-09-02
+**Created**: 2026-09-03
 
 **Status**: Draft
 
@@ -12,105 +12,101 @@
 
 ### User Story 1 - Find Owners by Last Name (Priority: P1)
 
-Given owners exist in the system, When a user searches for owners by a last name starting with "Franklin", Then the system displays a list of owners whose last names start with "Franklin" and redirects to the owner's detail page.
+Given an owner with the last name "Franklin" exists, When a user searches for owners with the last name "Franklin", Then the system redirects to the owner's details page.
 
-**Why this priority**: This is a core functionality for managing pet owners and is essential for day-to-day operations.
+**Why this priority**: This is a core functionality for accessing owner information and is marked as P1 in the provided user stories.
 
-**Independent Test**: Can be fully tested by entering "Franklin" into the owner search field and verifying the displayed results and navigation to the owner detail page.
+**Independent Test**: Can be fully tested by navigating to the owner search page, entering "Franklin" in the last name field, and verifying redirection to the correct owner's detail page.
 
 **Acceptance Scenarios**:
 
-1. **Given** there are owners with last names "Franklin", "Smith", and "Johnson", **When** a user searches for owners with the last name "Franklin", **Then** only owners with the last name "Franklin" are displayed.
-2. **Given** an owner named "John Franklin" exists, **When** a user searches for "Franklin" and clicks on "John Franklin" from the results, **Then** the system navigates to the detail page for John Franklin.
+1. **Given** an owner named "John Franklin" exists with a unique ID, **When** a user searches for owners with the last name "Franklin", **Then** the system displays the details page for "John Franklin".
 
 ---
 
-### User Story 2 - Create a New Owner (Priority: P2)
+### User Story 2 - Find Owners with Partial Last Name Match (Priority: P2)
 
-Given a user is on the new owner form, When they submit a valid owner form, Then the owner is created and a success message is displayed.
+Given multiple owners whose last names start with "Franklin" exist, When a user searches for owners with the last name "Franklin" on page 1, Then the system displays a list of owners matching the criteria.
 
-**Why this priority**: Adding new owners is a fundamental requirement for expanding the pet clinic's client base.
+**Why this priority**: This story supports efficient searching for owners when the exact last name is not known, enhancing usability.
 
-**Independent Test**: Can be fully tested by navigating to the new owner form, filling in all required fields with valid data, submitting the form, and verifying the owner is listed and a success message is shown.
+**Independent Test**: Can be fully tested by creating multiple owners with last names starting with "Franklin" (e.g., "Franklin", "Franklinsmith"), searching for "Franklin", and verifying that all matching owners are displayed on the first page of results.
 
 **Acceptance Scenarios**:
 
-1. **Given** a user is on the "New Owner" form, **When** they enter valid data for first name, last name, address, city, telephone, and email, **Then** the owner is successfully created and the user is redirected to the owner's detail page with a success notification.
+1. **Given** owners "John Franklin" and "Jane Franklinsmith" exist, **When** a user searches for owners with the last name "Franklin", **Then** the system displays a list containing both "John Franklin" and "Jane Franklinsmith".
 
 ---
 
-### User Story 3 - Update an Existing Owner (Priority: P2)
+### User Story 3 - Handle Empty Last Name Search (Priority: P3)
 
-Given a user is viewing an owner's detail page, When they edit the owner's information and submit valid changes, Then the owner's details are updated and a success message is displayed.
+Given multiple owners exist, When a user searches for owners with an empty or whitespace-only last name, Then the system displays a list of all owners.
 
-**Why this priority**: Allows for maintaining accurate owner information as circumstances change.
+**Why this priority**: This ensures that users can retrieve all owner records if they don't have specific search criteria, providing a fallback mechanism.
 
-**Independent Test**: Can be fully tested by selecting an existing owner, navigating to their edit form, making a valid change (e.g., updating the phone number), submitting the form, and verifying the updated information on the detail page.
-
-**Acceptance Scenarios**:
-
-1. **Given** a user is on an owner's detail page, **When** they click "Edit Owner", enter a new valid telephone number, and click "Save", **Then** the owner's telephone number is updated, and a success message is displayed.
-
----
-
-### User Story 4 - Handle Invalid Owner Creation (Priority: P3)
-
-Given a user is on the new owner form, When they submit an invalid owner form (e.g., missing required fields, invalid phone format), Then an error message is displayed and the form is re-rendered with the invalid fields highlighted.
-
-**Why this priority**: Ensures data integrity and guides users to provide correct information.
-
-**Independent Test**: Can be fully tested by attempting to submit the new owner form with missing or invalid data and verifying that appropriate error messages are displayed and the form remains editable.
+**Independent Test**: Can be fully tested by creating several owners, performing a search with an empty last name field, and verifying that all created owners are displayed.
 
 **Acceptance Scenarios**:
 
-1. **Given** a user is on the "New Owner" form, **When** they leave the "Last Name" field blank and click "Save", **Then** an error message "Last name must not be blank" is displayed, and the form is re-rendered with the "Last Name" field highlighted.
-2. **Given** a user is on the "New Owner" form, **When** they enter "123" for the "Telephone" field and click "Save", **Then** an error message "Telephone must be exactly 10 digits" is displayed, and the form is re-rendered with the "Telephone" field highlighted.
+1. **Given** multiple owners exist, **When** a user searches for owners with an empty last name field, **Then** the system displays a list of all existing owners.
 
 ---
 
 ### Edge Cases
 
-- What happens when an owner's first name is blank? → Validation error.
-- What happens when an owner's last name is blank? → Validation error.
-- What happens when an owner's address is blank? → Validation error.
-- What happens when an owner's city is blank? → Validation error.
-- What happens when an owner's telephone number does not match the `\d{10}` pattern? → Validation error.
-- What happens when attempting to edit or view an owner with a non-existent ID? → `IllegalArgumentException` indicating owner not found.
+- What happens when an owner's first name is blank during creation or update?
+- What happens when an owner's address is blank during creation or update?
+- What happens when an owner's city is blank during creation or update?
+- What happens when an owner's telephone number does not match the `\\d{10}` pattern during creation or update?
+- What happens when attempting to edit an owner with an ID that does not exist?
+- What happens when attempting to create a pet for an owner with an ID that does not exist?
+- What happens when attempting to create a visit for a pet belonging to an owner with an ID that does not exist?
+- What happens when attempting to create a visit for a pet with an ID that does not exist for a given owner?
+- What happens when a pet's name is blank during creation or update?
+- What happens when a pet is created or updated without selecting a pet type?
+- What happens when a pet is created or updated with a null birth date?
+- What happens when attempting to add a pet with a name that already exists for the same owner?
+- What happens when a visit is created with a date that is not in the future?
+- What happens when searching for owners with a last name that yields no results?
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: System MUST allow the creation of a new owner with first name, last name, address, city, and telephone.
-- **FR-002**: System MUST allow the update of an existing owner's details (first name, last name, address, city, telephone).
-- **FR-003**: System MUST allow owners to be searched by last name.
-- **FR-004**: System MUST display a list of owners matching a search query.
-- **FR-005**: System MUST allow navigation to an owner's detail page from the search results.
-- **FR-006**: System MUST validate that owner's first name is not blank.
-- **FR-007**: System MUST validate that owner's last name is not blank.
-- **FR-008**: System MUST validate that owner's address is not blank.
-- **FR-009**: System MUST validate that owner's city is not blank.
-- **FR-010**: System MUST validate that owner's telephone number consists of exactly 10 digits.
-- **FR-011**: System MUST handle cases where an owner ID does not exist during retrieval or update operations.
+- **FR-001**: System MUST allow the creation of a new pet for an existing owner.
+- **FR-002**: System MUST allow the updating of an existing pet's name.
+- **FR-003**: System SHOULD validate pet information during creation or update.
+- **FR-004**: System SHOULD allow the retrieval of all pet types for use in forms.
+- **FR-005**: System SHOULD handle potential data integrity violations when saving owner or pet data.
+- **FR-006**: System MUST allow the creation of new owners.
+- **FR-007**: System MUST allow the updating of existing owner information, including address, city, and telephone.
+- **FR-008**: System MUST validate owner information during creation and update according to defined business rules.
+- **FR-009**: System MUST allow searching for owners by last name, supporting exact and partial matches.
+- **FR-010**: System MUST display a list of all owners when a search with an empty or whitespace-only last name is performed.
+- **FR-011**: System MUST display owner details upon successful search.
+- **FR-012**: System MUST prevent duplicate pet names for the same owner.
 
 ### Key Entities *(include if feature involves data)*
 
-- **Owner**: Represents a pet owner, including their personal details (address, city, telephone) and a collection of their pets.
-- **Person**: Base entity for individuals, providing common fields like first name and last name. (Owner extends Person)
+- **Owner**: Represents an individual who owns one or more pets. Key attributes include first name, last name, address, city, and telephone number. An owner can have multiple pets.
+- **Pet**: Represents an animal owned by an owner. Key attributes include name, birth date, and type. A pet belongs to one owner and can have multiple visits.
+- **PetType**: Represents the category of a pet (e.g., Dog, Cat, Hamster). Key attribute is the name of the pet type.
+- **Visit**: Represents a veterinary visit for a pet. Key attributes include date and description. A visit is associated with a specific pet.
 
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
-- **SC-001**: Users can find owners by last name in under 3 seconds.
-- **SC-002**: New owners can be created with valid data in under 1 minute.
-- **SC-003**: 95% of owner creation/update attempts with invalid data result in clear, actionable error messages.
-- **SC-004**: The system successfully handles requests for non-existent owner IDs without crashing, providing appropriate feedback.
+- **SC-001**: Users can successfully create and update owner profiles with all required information in under 1 minute.
+- **SC-002**: Owner searches return relevant results within 2 seconds for up to 1000 owners.
+- **SC-003**: 95% of new pet creations for existing owners are completed successfully without validation errors.
+- **SC-004**: The system prevents duplicate pet names for the same owner with immediate user feedback.
+- **SC-005**: Reduction in data entry errors for owner information by 30% due to improved validation.
 
 ## Assumptions
 
-- Users have stable internet connectivity.
-- The system will reuse the existing `Person` entity for owner details.
-- Data validation rules for owner fields (e.g., telephone format) are as specified in the provided context.
-- The `OwnerRepository` and related persistence mechanisms are already in place and functional.
-- The UI for displaying owner lists and detail pages will be developed separately but should accommodate the data structure defined here.
+- Users have stable internet connectivity when interacting with the application.
+- The application will be accessed via a web browser.
+- Existing authentication mechanisms will be reused for user access control.
+- The system will use a relational database for data persistence.
+- The primary language for user interaction is English.
