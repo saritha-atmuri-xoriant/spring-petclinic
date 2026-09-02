@@ -3,39 +3,30 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). Components MUST NOT cross layer boundaries in an unintended manner. This ensures separation of concerns and maintainability.
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain/Model, Configuration, Test). Cross-layer dependencies MUST be strictly unidirectional, flowing downwards (e.g., Controllers depend on Services, Services depend on Repositories).
 
-### II. Spring Boot Convention Over Configuration
-The project MUST leverage Spring Boot's auto-configuration capabilities where appropriate. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be clearly defined and justified, adhering to Spring's idiomatic patterns.
+### II. Spring Boot Conventions
+The project MUST leverage Spring Boot's auto-configuration capabilities and follow established Spring conventions for dependency injection, component scanning, and configuration management. Externalized configuration MUST be managed via `application.properties` or `application.yml`.
 
-### III. Comprehensive Test Coverage (NON-NEGOTIABLE)
-All new features and bug fixes MUST be accompanied by unit and/or integration tests. Existing tests MUST be maintained and updated. The test suite MUST cover all critical paths and business logic.
+### III. Test-Driven Development (TDD) & Comprehensive Testing
+All new features and bug fixes MUST be developed with a test-first approach. Unit tests MUST cover individual components, integration tests MUST verify interactions between components and with external systems (e.g., databases), and end-to-end tests (where applicable) MUST validate user flows. Test coverage MUST be maintained at a high level, with a minimum of 80% for critical business logic.
 
-### IV. Domain Model Integrity
-Domain entities (e.g., `Owner`, `Pet`, `Vet`) MUST be defined with appropriate JPA annotations and validation constraints. Relationships between entities MUST be clearly modeled and managed.
+### IV. Domain-Driven Design Principles
+The core domain entities (Owner, Pet, Vet, Visit, PetType, Specialty) MUST accurately represent the business concepts. Business logic MUST be encapsulated within the domain layer or service layer, not within controllers or repositories.
 
-### V. Observability and Configuration Management
-Application behavior MUST be configurable through standard Spring Boot mechanisms (e.g., `application.properties`, environment variables). Logging MUST be used effectively for debugging and monitoring.
+### V. Observability and Configuration
+Application behavior MUST be configurable through external properties. Logging MUST be structured and informative, aiding in debugging and monitoring. Internationalization (i18n) MUST be handled consistently using Spring's i18n mechanisms.
 
 ## Additional Constraints
 
-The project MUST adhere to Java Bean Validation (JSR 380) for data validation.
-The project MUST utilize Spring Data JPA for data persistence.
-The project MUST support multiple database integrations as demonstrated by the presence of `MySqlIntegrationTests` and `PostgresIntegrationTests`.
+The project MUST utilize Java as the primary programming language and Spring Boot as the core framework. JPA and Hibernate MUST be used for data persistence. The project is designed to be deployable within a containerized environment (e.g., Docker, Kubernetes), as indicated by the presence of a `k8s` directory.
 
 ## Development Workflow
 
-All code changes MUST be submitted via Pull Requests.
-Pull Requests MUST include comprehensive descriptions of the changes and rationale.
-Code reviews MUST verify adherence to the core principles and architectural guidelines.
-Automated tests MUST pass before a Pull Request can be merged.
-New features or significant refactorings may require a brief design discussion with senior team members.
+All code changes MUST be submitted as Pull Requests (PRs). Each PR MUST include comprehensive unit and integration tests. Code reviews are mandatory, with at least one reviewer approving the changes. Automated checks, including static analysis and test execution, MUST pass before merging.
 
 ## Governance
 
-This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository.
-Amendments to this Constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team.
-All Pull Requests and code reviews MUST verify compliance with this Constitution.
-Any deviation from these principles MUST be explicitly justified and approved.
+This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this Constitution require a formal proposal, documentation of the rationale, and approval by a majority of the core development team. Any approved amendments must include a migration plan to ensure existing code adheres to the new principles. All Pull Requests and code reviews MUST verify compliance with this Constitution.
 
 **Version**: 1.0.0 | **Ratified**: 2026-09-02 | **Last Amended**: 2026-09-02
