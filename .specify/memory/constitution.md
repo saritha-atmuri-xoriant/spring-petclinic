@@ -3,44 +3,30 @@
 ## Core Principles
 
 ### I. Layered Architecture Adherence
-Every component MUST reside within its designated architectural layer (Controller, Repository, Domain, Configuration, Test). Direct dependencies MUST only flow downwards (e.g., Controller can depend on Service, Service on Repository, but not vice-versa).
+Every component MUST reside within its designated architectural layer (Controller, Repository, Domain, Configuration, Test). Direct dependencies MUST only flow downwards (e.g., Controller can depend on Service, Service on Repository, but not vice-versa). This ensures maintainability and clear separation of concerns.
 
-### II. Spring Boot Conventions
-The project MUST leverage Spring Boot features and conventions for configuration, dependency injection, and application bootstrapping. This includes utilizing `@SpringBootApplication`, auto-configuration, and standard Spring annotations.
+### II. Test-Driven Development (TDD) and Comprehensive Testing
+All new features and bug fixes MUST be developed using TDD. Unit tests MUST cover individual components, integration tests MUST validate interactions between components and external systems (e.g., database), and end-to-end tests MUST verify user flows. The existing test suite, including `MySqlIntegrationTests`, `PostgresIntegrationTests`, and various controller/service tests, MUST be maintained and expanded.
 
-### III. Test-Driven Development (TDD) & Comprehensive Testing
-All new features and bug fixes MUST be developed with a test-first approach. Unit tests MUST cover individual components, while integration tests MUST validate interactions between layers and external systems (e.g., database, external APIs). All tests MUST pass before code is merged.
+### III. Spring Boot Convention Over Configuration
+The project MUST leverage Spring Boot's auto-configuration capabilities wherever possible. Custom configurations (e.g., `CacheConfiguration`, `WebConfiguration`) MUST be minimal, well-documented, and adhere to Spring best practices. Dependencies MUST be managed via Maven.
 
-### IV. Data Persistence Abstraction
-Data access MUST be abstracted through Spring Data repositories. Direct SQL manipulation within business logic is forbidden. All repository interfaces MUST be clearly defined and adhere to Spring Data JPA standards.
+### IV. Domain-Driven Design Principles
+The core domain entities (`Owner`, `Pet`, `Vet`, `Visit`, `PetType`, `Specialty`) MUST be clearly defined and immutable where appropriate. Business logic MUST be encapsulated within the domain or service layers, not directly within controllers or repositories. Validation MUST be handled using Jakarta Bean Validation annotations and custom validators (`PetValidator`).
 
-### V. Internationalization (i18n) First
-All user-facing strings MUST be externalized and managed through i18n properties files. The `I18nPropertiesSyncTest` MUST pass, ensuring all strings are translated across all supported locales.
+### V. Observability and Internationalization
+The application MUST support internationalization (i18n) as evidenced by `WebConfiguration` and `I18nPropertiesSyncTest`. All user-facing strings MUST be externalized into resource bundles. Logging and error handling mechanisms SHOULD be implemented to facilitate debugging and monitoring.
 
 ## Additional Constraints
 
-### Technology Stack
-The project MUST be built using Java and Spring Boot. Dependencies MUST be managed via Maven. The primary database technology is assumed to be relational (e.g., H2, PostgreSQL, MySQL), with Spring Data JPA for persistence.
-
-### Security
-While not explicitly detailed in the provided files, standard web application security practices SHOULD be followed, including input validation and protection against common vulnerabilities.
-
-### Observability
-The application SHOULD be instrumented for monitoring and logging. Spring Boot Actuator and standard logging frameworks (e.g., SLF4j with Logback) are expected to be used.
+The project MUST utilize Java as the primary programming language and Maven for dependency management. The application is designed to run on a Java Virtual Machine and is compatible with standard relational databases (e.g., MySQL, PostgreSQL) as indicated by integration tests. Containerization configurations (e.g., `k8s/`, `.devcontainer/`) SHOULD be maintained for deployment and development consistency.
 
 ## Development Workflow
 
-### Code Reviews
-All pull requests MUST undergo a thorough code review by at least one other team member. Reviews MUST verify adherence to these principles, coding standards, and overall code quality.
-
-### Quality Gates
-Automated checks, including compilation, static analysis (e.g., SonarQube), and all unit and integration tests, MUST pass successfully before a pull request can be merged.
-
-### Database Migrations
-Any schema changes MUST be managed through a database migration tool (e.g., Flyway, Liquibase), with migration scripts committed to the repository.
+All code changes MUST be submitted as Pull Requests (PRs). Each PR MUST include comprehensive unit and integration tests. Code reviews are mandatory, with at least one reviewer approving the changes. CI/CD pipelines MUST automatically run all tests and static analysis checks before merging.
 
 ## Governance
 
-This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this Constitution require a formal proposal, documented justification, and approval by a majority of core maintainers. Any approved amendments MUST include a plan for migrating existing code and practices to comply with the changes. All pull requests and code reviews MUST verify compliance with this Constitution.
+This Constitution supersedes all other development practices for the `saritha-atmuri-xoriant/spring-petclinic` repository. Amendments to this Constitution require a formal proposal, documentation of the rationale, and approval by a majority of core maintainers. A migration plan MUST be provided for any changes that impact existing workflows or code. All Pull Requests and code reviews MUST verify compliance with these principles.
 
 **Version**: 1.0.0 | **Ratified**: 2026-09-04 | **Last Amended**: 2026-09-04
